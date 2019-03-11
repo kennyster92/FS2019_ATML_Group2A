@@ -7,11 +7,12 @@ import urllib.parse
 ##################################
 
 nr_images = '10'  # if you want to download all the images = 23906
+offset_imgs = '0' # if you want to start downloading from a specific image
 nr_imgs_in_zip = 3  # cannot be higher than 300
 
 
 url = 'https://isic-archive.com/api/v1/'
-get_images_and_metadata_method = 'image?limit=' + nr_images + '&sort=name&sortdir=1&detail=true'
+get_images_and_metadata_method = 'image?limit=' + nr_images + '&offset=' + offset_imgs + '&sort=name&sortdir=1&detail=true'
 
 # complete URL to get all the images ID and the tag benign/malignant
 url_request = url + get_images_and_metadata_method
@@ -28,11 +29,26 @@ all_data = []
 # write metadata on a separate json file #
 ##########################################
 
+def getImageClassificationTag(image):
+
+    try:
+        imageClassification = image['meta']['clinical']['benign_malignant']
+
+        if (imageClassification is None):
+            return "None"
+        else:
+            return imageClassification
+			
+    except Exception as e:
+	
+        print("Cannot extract the classification of image " + str(image['name']) + ":" + str(e))
+        return "_Fetch_Error_"
+
 # loop over all the images and store the ids of the images, the name of the file and the tags (benign/malignant)
 for img in img_data:
     id = img['_id']
     name = img['name']
-    classification_tag = img['meta']['clinical']['benign_malignant']
+    classification_tag = getImageClassificationTag(img)
 
     dict_object = dict(_id=id, name=name, benign_malignant=classification_tag)
     all_data.append(dict_object)

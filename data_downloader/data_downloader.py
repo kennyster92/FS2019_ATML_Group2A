@@ -2,13 +2,17 @@ import requests
 import json
 import urllib.parse
 
+from zipfile import ZipFile
+import os
+
+
 ##################################
 # Modify only those 2 parameters #
 ##################################
 
-nr_images = '10'  # if you want to download all the images = 23906
+nr_images = '100'  # if you want to download all the images = 23906
 offset_imgs = '0' # if you want to start downloading from a specific image
-nr_imgs_in_zip = 3  # cannot be higher than 300
+nr_imgs_in_zip = 20  # cannot be higher than 300
 
 
 url = 'https://isic-archive.com/api/v1/'
@@ -52,6 +56,17 @@ for img in img_data:
 
     dict_object = dict(_id=id, name=name, benign_malignant=classification_tag)
     all_data.append(dict_object)
+    
+# =============================================================================
+#     #print(dict_object)
+#     if dict_object['benign_malignant'] == "benign":
+#         print("ben")
+#         
+#     if dict_object['benign_malignant'] == "malignant":
+#         print("mal")
+#         
+# =============================================================================
+    
     img_ids.append(id)
 
 # get a file object with write permission
@@ -87,4 +102,29 @@ for i in range(0, len(chunks)):
     with open('img_' + "{:02d}".format(i) + '.zip', 'wb') as f:
         f.write(response_download.content)
         print('img_' + "{:02d}".format(i) + '.zip created.')
+        
     f.close()
+    
+    # Extract files
+    # Create a ZipFile Object and load sample.zip in it
+    with ZipFile('img_' + "{:02d}".format(i) + '.zip', 'r') as zipObj:
+        # Extract all the contents of zip file in different directory
+        zipObj.extractall('downloadedFiles')
+    
+    print('img_' + "{:02d}".format(i) + '.zip unzipped.')
+    
+    
+    # Delete zip files
+    os.remove('img_' + "{:02d}".format(i) + '.zip')
+    print('img_' + "{:02d}".format(i) + '.zip deleted.')
+    print()
+    
+    
+# Delete useless files
+os.remove("downloadedFiles/ISIC-images/UDA-1/LICENSE.txt")
+print('LICENSE.txt deleted.')
+os.remove("downloadedFiles/ISIC-images/UDA-1/ATTRIBUTION.txt")
+print('ATTRIBUTION.txt deleted.')
+
+    
+print('\nDone!')

@@ -1,10 +1,8 @@
 import requests
 import json
 import urllib.parse
-
 from zipfile import ZipFile
 import os
-
 
 ##################################
 # Modify only those 2 parameters #
@@ -32,7 +30,6 @@ all_data = []
 ##########################################
 # write metadata on a separate json file #
 ##########################################
-
 def getImageClassificationTag(image):
 
     try:
@@ -126,5 +123,4 @@ print('LICENSE.txt deleted.')
 os.remove("downloadedFiles/ISIC-images/UDA-1/ATTRIBUTION.txt")
 print('ATTRIBUTION.txt deleted.')
 
-    
 print('\nDone!')

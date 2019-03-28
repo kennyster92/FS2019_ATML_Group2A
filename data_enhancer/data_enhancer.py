@@ -14,18 +14,51 @@ path = "downloadedFiles/ISIC-images/UDA-1"
 
 
 def transformHorizontalFlip(imagePath):
+    print("Application of the flipping to image: " + str(file))
+    
     image = PIL.Image.open(imagePath)
     transform = transforms.RandomHorizontalFlip(p=1.0)
     transformed = transform(image)
     
-    transformed.rotate(90).save(path + "/" + os.path.splitext(file)[0] + "_rotated" + os.path.splitext(file)[1])
+    transformed.save(path + "/" + os.path.splitext(file)[0] + "_flipped" + os.path.splitext(file)[1])
+
+
+def transformRotation(imagePath):
+    image = PIL.Image.open(imagePath)
+    
+    for nbRot in range(1, 4):
+        print("Application of the rotation " + str(nbRot) + " to image: " + str(file))
+        
+        transform = transforms.RandomRotation(45)
+        transformed = transform(image)
+        
+        transformed.save(path + "/" + os.path.splitext(file)[0] + "_rotated" + str(nbRot) + os.path.splitext(file)[1])
+
+def transformRndCrop(imagePath): 
+    image = PIL.Image.open(imagePath)
+
+    for nbCrop in range(1, 4):
+        print("Application of the random crop " + str(nbCrop) + " to image: " + str(file))
+        
+        transform = transforms.RandomCrop((220, 220))
+        transformed = transform(image)
+    
+        transformed.save(path + "/" + os.path.splitext(file)[0] + "_rndCroped" + str(nbCrop) + os.path.splitext(file)[1])
+
+
+def transformColorJitter(imagePath):
+    print("Application of the color jitter to image: " + str(file))
+    
+    image = PIL.Image.open(imagePath)
+    
+    transform = transforms.ColorJitter(brightness=0.4, contrast=0.4, saturation=0.4, hue=0.02)
+    transformed = transform(image)
+
+    transformed.save(path + "/" + os.path.splitext(file)[0] + "_colorJittered" + os.path.splitext(file)[1])
 
 
 
 
-#def transformHorizontalFlip(imagePath):
-
- 
 
 # Check if data set is in the correct folder
 if os.path.exists(path) == 0 or len(os.listdir(path)) == 0:
@@ -40,38 +73,13 @@ for file in os.listdir(path):
     
     if ext.lower() in valid_images:
         if len(file) == 16:
-            transformHorizontalFlip(path + "/" + file)
-            
-            print("Application of the <transformation> to image: " + str(file))
+            transformHorizontalFlip(path + "/" + file)            
+            transformRotation(path + "/" + file)
+            #transformRndCrop(path + "/" + file)
+            transformColorJitter(path + "/" + file)
 
 
 
-# =============================================================================
-# image = PIL.Image.open('cat4.jpg')
-# image = image.resize((320, 320))
-# 
-# plt.imshow(image)
-# plt.axis('off');
-# 
-# #Horizontal flip
-# transform = transforms.RandomHorizontalFlip(p=1.0)
-# transformed = transform(image)
-# plt.imshow(transformed)
-# plt.axis('off');
-# 
-# 
-# # =============================================================================
-# # #Random crop
-# # transform = transforms.RandomCrop((220, 220))
-# # f, axes = plt.subplots(2, 3, figsize=(12.8, 9.6))
-# # axes = [ax for axs in axes for ax in axs]
-# # for i in range(6):
-# #     transformed = transform(image)
-# #     axes[i].imshow(transformed)
-# #     axes[i].axis('off')
-# #     
-# # 
-# #     
 # # #Random crop 2
 # # transform = transforms.FiveCrop((220, 220))
 # # f, axes = plt.subplots(2, 3, figsize=(12.8, 9.6))

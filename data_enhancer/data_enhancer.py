@@ -1,13 +1,11 @@
 #Transformations to artificially increase the number of images
 #Transformations used: flip, color jitter, rotation
 
-import matplotlib.pyplot as plt
-#import torch
 import torchvision.transforms as transforms
-#from torch.utils.data import Dataset, DataLoader
 import PIL
 import os
 import sys
+import numpy as np
 
 imgs = []
 path = "downloadedFiles/ISIC-images/UDA-1"   
@@ -54,10 +52,7 @@ def transformColorJitter(imagePath):
     transform = transforms.ColorJitter(brightness=0.4, contrast=0.4, saturation=0.4, hue=0.02)
     transformed = transform(image)
 
-    transformed.save(path + "/" + os.path.splitext(file)[0] + "_colorJittered" + os.path.splitext(file)[1])
-
-
-
+    transformed.save(path + "/" + os.path.splitext(file)[0] + "_colorJittered" + os.path.splitext(file)[1])        
 
 
 # Check if data set is in the correct folder

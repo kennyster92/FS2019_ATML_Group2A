@@ -6,6 +6,10 @@ import PIL
 import os
 import sys
 import numpy as np
+from skimage.transform import downscale_local_mean
+from skimage import io
+from scipy import misc
+import cv2
 
 imgs = []
 path = "downloadedFiles/ISIC-images/UDA-1"   
@@ -55,12 +59,44 @@ def transformColorJitter(imagePath):
     transformed.save(path + "/" + os.path.splitext(file)[0] + "_colorJittered" + os.path.splitext(file)[1])        
 
 
-# Check if data set is in the correct folder
+def downsampleDataset(imagePath, finalDimX):
+    image = io.imread(imagePath)
+    
+    dimX = image.shape[0]
+    dimY = image.shape[0]
+    
+    downSamplingFactor = finalDimX/dimX
+    
+    newDimX = int(downSamplingFactor*dimX)
+    newDimY = int(downSamplingFactor*dimY)
+    
+    print("Downsampling to (" + str(newDimX) + ";" + str(newDimY) + ") -> Ratio= %.3f" % downSamplingFactor) 
+    
+    arr = np.array(image)
+    image_downscaled = downscale_local_mean(arr, (4, 4, 1))
+    
+    misc.imsave(imagePath[:-4] + "_downsampled.jpg", image_downscaled)
+
+
+def transformBlurringImage(imagePath, blurringFactor):
+    print("Application of the gaussian blurring filter to image: " + str(file))
+    img = cv2.imread(imagePath)
+
+    kernel = np.ones((blurringFactor,blurringFactor),np.float32)/(blurringFactor*blurringFactor)
+    dst = cv2.filter2D(img,-1,kernel)
+
+    cv2.imwrite(imagePath[:-4] + "_blurred.jpg", dst)
+
+ 
+
+
+
+
 if os.path.exists(path) == 0 or len(os.listdir(path)) == 0:
     print("Images not found. Put the data set in: downloadedFiles/ISIC-images/UDA-1 folder")
     sys.exit()
     
-    
+
     
 valid_images = [".jpg"]
 for file in os.listdir(path):
@@ -70,9 +106,12 @@ for file in os.listdir(path):
         if len(file) == 16:
             transformHorizontalFlip(path + "/" + file)            
             transformRotation(path + "/" + file)
-            #transformRndCrop(path + "/" + file)
+            
+            transformRndCrop(path + "/" + file)
+            
             transformColorJitter(path + "/" + file)
-
+            transformBlurringImage(path + "/" + file, 25)
+            downsampleDataset(path + "/" + file, 250)
 
 
 # # #Random crop 2

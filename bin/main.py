@@ -1,7 +1,10 @@
+from itertools import dropwhile
+
 import torch
 from argparse import ArgumentParser
 import utils.ConfigurationFileParser as conf
-
+import bin.test.Testing
+import bin.train.Training
 
 if __name__ == '__main__':
     """The program's entry point.
@@ -26,14 +29,28 @@ if __name__ == '__main__':
 
     config = args.__getattribute__('config_file_path')
 
+    configuration = conf.ConfigurationFileParser(config)
 
-    model = conf.getModel(config)
-
-    #optimizer = conf.getOptimizer(config)
-    #loss_function = conf.getLoss(config)
-    #scheduler = conf.getScheduler(config)
+    model = configuration.getModel()
+    optimizer = configuration.getOptimizer()
+    loss = configuration.getLoss()
+    scheduler = configuration.getScheduler()
+    epochs = configuration.getEpochs()
+    batchSize = configuration.getBatchSize()
+    channels = configuration.getChannels()
+    lr = configuration.getLearningRate()
+    dropout = configuration.getDropout()
 
     print(model)
+    print(optimizer)
+    print(loss)
+    print(scheduler)
+    print(epochs)
+    print(batchSize)
+    print(channels)
+    print(lr)
+    print(dropout)
+
 
     #model = ConvNet()
     #model = model.to(device)

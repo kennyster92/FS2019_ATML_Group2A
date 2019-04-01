@@ -222,6 +222,10 @@ def resnet50(pretrained=False, **kwargs): #  Constructs a ResNet-50 model
         pretrained (bool): If True, returns a model pre-trained on ImageNet, we won´t use it here
         bottleneck is a 3 operation block
         [3, 4, 6, 3] are the layers
+        3 layers -> output size 56x56
+        4 layers -> output size 28x28
+        6 layers -> output size 14x14
+        3 layers -> output size 7x7
     """
     model = ResNet(Bottleneck, [3, 4, 6, 3], **kwargs)  #  description of the basic structure of resnet
 

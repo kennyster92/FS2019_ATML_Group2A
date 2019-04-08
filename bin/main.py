@@ -3,8 +3,8 @@ from itertools import dropwhile
 import torch
 from argparse import ArgumentParser
 import utils.ConfigurationFileParser as conf
-import bin.test.Testing
-import bin.train.Training
+import bin.test.Testing as test
+import bin.train.Training as train
 
 if __name__ == '__main__':
     """The program's entry point.
@@ -28,6 +28,7 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     config = args.__getattribute__('config_file_path')
+    verbose = args.__getattribute__('verbose')
 
     configuration = conf.ConfigurationFileParser(config)
 
@@ -41,21 +42,20 @@ if __name__ == '__main__':
     lr = configuration.getLearningRate()
     dropout = configuration.getDropout()
 
-    print(model)
-    print(optimizer)
-    print(loss)
-    print(scheduler)
-    print(epochs)
-    print(batchSize)
-    print(channels)
-    print(lr)
-    print(dropout)
+    train_dataloader = None
+    val_dataloader = None
 
+    if (verbose):
+        print(model)
+        print(optimizer)
+        print(loss)
+        print(scheduler)
+        print(epochs)
+        print(batchSize)
+        print(channels)
+        print(lr)
+        print(dropout)
 
-    #model = ConvNet()
-    #model = model.to(device)
-    #optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate, weight_decay=alpha)
-    #loss_function = nn.CrossEntropyLoss()
-    #scheduler = torch.optim.lr_scheduler.StepLR(optimizer=optimizer, step_size=10, gamma=0.1)
-
-    #train_losses, val_losses, train_accuracies, val_accuracies = fit(train_dataset, val_dataset, model, optimizer, loss_function, n_epochs, scheduler)
+    trainer = train.Trainer()
+    train_losses, train_accuracies, val_losses, val_accuracies = trainer.fit(train_dataloader, val_dataloader, model, optimizer, loss, epochs, scheduler)
+    #

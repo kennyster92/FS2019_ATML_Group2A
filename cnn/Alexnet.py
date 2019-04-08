@@ -4,14 +4,11 @@
 Alexnet structure
 """
 
-import os
+
 import torch
-import torch.nn as nn
-import math
-from torchvision.datasets import ImageFolder #imageFolder is a data loader
+
 from torchvision.transforms import Resize, ToTensor, Normalize, Compose #Composes several transforms together
 from torch.utils.data import DataLoader
-import torch.optim as optim
 import numpy as np
 
 
@@ -20,10 +17,8 @@ torch.cuda.empty_cache()
 print(device)
 
 #  TODO link the folder containing images
-train_dir = './.../train'
-test_dir = './.../test'
-val_dir = './.../valid'
-
+images_file = './data/images.npy'
+labels_file = './data/labels.npy'
 
 
 root_dir = train_dir
@@ -35,13 +30,37 @@ transforms = Compose([Resize(target_size), # Resize image
                     Normalize(mean=(0.5, 0.5, 0.5,), std=(0.5, 0.5, 0.5)), # scales to [-1.0, 1.0]
                     ])
 
-train_dataset = ImageFolder(root_dir, transform=transforms) # takes in an PIL image and returns a transformed version.
-# len(train_dataset) #contain all images of the set, dereferencable with train_dataset[x][0] -->23000
-# type(train_dataset)
+images = np.load(images_file)
+labels = np.load(labels_file)
 
 
 #  TODO selection batch size
 batch_size = 4
+
+# creation of the Dataset class --------------------------
+from torch.utils.data import Dataset
+
+
+class DigitDataset(Dataset):
+    # write your code
+    def __init__(self, image, label, transform=None):
+        self.image = image  # our image
+        self.label = label  # our related center
+        self.transform = transform
+
+    def __getitem__(self, index):
+        # Anything could go here, e.g. image loading from file or a different structure
+        # must return image and center
+        sel_image = self.image[index]
+        sel_label = self.label[index]
+        if self.transform is not None:
+            sel_image = self.transform(sel_image)
+
+        #  TODO define the type of label (1-0, string ???)
+        return sel_image, sel_label  # return 2 tensors
+
+    def __len__(self):
+        return len(self.image)  # return how many images and center we have
 
 # Parameter description --------------------------
 #  DataLoader(Dataset,int,bool,int)
@@ -50,13 +69,22 @@ batch_size = 4
 #  shuffle (bool, optional) – set to True to have the data reshuffled at every epoch (default: False).
 #  num_workers = n - how many threads in background for efficient loading
 
+
+transforms = Compose([ToTensor()])
+
+#  TODO split data in 3 different sent of images
+train_dataset = DigitDataset(train_im, train_label, transforms)
+val_dataset = DigitDataset(val_im, va_label, transforms)
+test_dataset = DigitDataset(test_im, test_label, transforms)
+
+# use dataloader and give dataset in parameter
+
 train_dataloader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True, num_workers=2)
+val_dataloader = DataLoader(val_dataset, batch_size=batch_size, shuffle=True, num_workers=2)
+test_dataloader = DataLoader(test_dataset, batch_size=8, shuffle=False, num_workers=2)
 
-val_root_dir = val_dir
-val_dataset = ImageFolder(val_root_dir, transform=transforms)
 
-val_dataloader = DataLoader(val_dataset, batch_size=batch_size, shuffle=False, num_workers=2) #  shuffle true or false?
-len(val_dataset)
+
 
 #  TODO test if dataset are good implemented, with a label for each image
 #  try to iterate over the train dataset
@@ -135,7 +163,7 @@ class AlexNet(nn.Module):
 import torch.optim as optim
 
 model = AlexNet()
-model = model.to(device) # transfer the neural net onto the GPU
+model = model.to(device)  # transfer the neural net onto the GPU
 criterion = nn.CrossEntropyLoss()
 optimizer = optim.Adam(model.parameters(), lr=0.001, betas=(0.9, 0.999), eps=1e-08, weight_decay=0, amsgrad=False)  # learning step and momentum accelerate gradients vectors in the right directions        
     

@@ -3,15 +3,16 @@ import json
 import urllib.parse
 from zipfile import ZipFile
 import os
+import shutil
 
-##################################
-# Modify only those 2 parameters #
-##################################
+tagsToDownload = ["malignant"] #benign, malignant, unknown, intermediate
 
-nr_images = '100'  # if you want to download all the images = 23906
+nr_images = '23906'  # if you want to download all the images = 23906
 offset_imgs = '0' # if you want to start downloading from a specific image
-nr_imgs_in_zip = 20  # cannot be higher than 300
+nr_imgs_in_zip = 100  # cannot be higher than 300
 
+
+print('Accessing to images on website...')
 
 url = 'https://isic-archive.com/api/v1/'
 get_images_and_metadata_method = 'image?limit=' + nr_images + '&offset=' + offset_imgs + '&sort=name&sortdir=1&detail=true'
@@ -45,7 +46,8 @@ def getImageClassificationTag(image):
         print("Cannot extract the classification of image " + str(image['name']) + ":" + str(e))
         return "_Fetch_Error_"
 
-# loop over all the images and store the ids of the images, the name of the file and the tags (benign/malignant)
+# loop over all the images and store the ids of the images, the name of the file and the tags
+
 for img in img_data:
     id = img['_id']
     name = img['name']
@@ -53,7 +55,7 @@ for img in img_data:
 
     dict_object = dict(_id=id, name=name, benign_malignant=classification_tag)
 
-    if (dict_object['benign_malignant'] == "benign") or (dict_object['benign_malignant'] == "malignant"):
+    if (dict_object['benign_malignant'] in tagsToDownload):
         all_data.append(dict_object)
         img_ids.append(id)
 
@@ -76,13 +78,18 @@ file_object.close()
 # creates chunks containing N image's ids
 chunks = [img_ids[x:x+nr_imgs_in_zip] for x in range(0, len(img_ids), nr_imgs_in_zip)]
 
+print("Downloading images...")
+
 # creates zips containing N images
 for i in range(0, len(chunks)):
+    
     # convert the ids of the images into json string then into URL convention
     json_string = json.dumps(chunks[i])
     ids_str_url = urllib.parse.quote_plus(json_string)
 
     # request to the API
+    print('Downloading img_' + "{:02d}".format(i) + '.zip...')
+    
     url_request_download = url + 'image/download?include=images&imageIds=' + ids_str_url
     response_download = requests.get(url_request_download)
 
@@ -93,25 +100,25 @@ for i in range(0, len(chunks)):
         
     f.close()
     
-    # Extract files
-    # Create a ZipFile Object and load sample.zip in it
-    with ZipFile('img_' + "{:02d}".format(i) + '.zip', 'r') as zipObj:
-        # Extract all the contents of zip file in different directory
-        zipObj.extractall('downloadedFiles')
-    
-    print('img_' + "{:02d}".format(i) + '.zip unzipped.')
-    
-    
+    # Extract jpg files
+    with ZipFile('img_' + "{:02d}".format(i) + '.zip', 'r') as zipObj: 
+        
+        print('extracting jpg files from img_' + "{:02d}".format(i) + '.zip')
+        
+        for file in zipObj.namelist():
+            if os.path.splitext(file)[1] == ".jpg":
+
+                zipObj.extract(file, 'downloadedFiles/temp')
+                
+                newPath = file[-16:]                
+                os.rename("downloadedFiles/temp/" + file, "downloadedFiles/" + "0_" + newPath)
+        
     # Delete zip files
-    os.remove('img_' + "{:02d}".format(i) + '.zip')
+    os.remove('img_' + "{:02d}".format(i) + '.zip')    
+    shutil.rmtree('downloadedFiles/temp')
+
     print('img_' + "{:02d}".format(i) + '.zip deleted.')
     print()
     
-    
-# Delete useless files
-os.remove("downloadedFiles/ISIC-images/UDA-1/LICENSE.txt")
-print('LICENSE.txt deleted.')
-os.remove("downloadedFiles/ISIC-images/UDA-1/ATTRIBUTION.txt")
-print('ATTRIBUTION.txt deleted.')
 
 print('\nDone!')

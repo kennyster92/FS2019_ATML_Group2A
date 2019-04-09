@@ -52,19 +52,10 @@ for img in img_data:
     classification_tag = getImageClassificationTag(img)
 
     dict_object = dict(_id=id, name=name, benign_malignant=classification_tag)
-    all_data.append(dict_object)
-    
-# =============================================================================
-#     #print(dict_object)
-#     if dict_object['benign_malignant'] == "benign":
-#         print("ben")
-#         
-#     if dict_object['benign_malignant'] == "malignant":
-#         print("mal")
-#         
-# =============================================================================
-    
-    img_ids.append(id)
+
+    if (dict_object['benign_malignant'] == "benign") or (dict_object['benign_malignant'] == "malignant"):
+        all_data.append(dict_object)
+        img_ids.append(id)
 
 # get a file object with write permission
 file_object = open('metadata.json', 'w')

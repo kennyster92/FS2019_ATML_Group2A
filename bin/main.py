@@ -56,6 +56,6 @@ if __name__ == '__main__':
         print(lr)
         print(dropout)
 
+
     trainer = train.Trainer()
     train_losses, train_accuracies, val_losses, val_accuracies = trainer.fit(train_dataloader, val_dataloader, model, optimizer, loss, epochs, scheduler)
-    #

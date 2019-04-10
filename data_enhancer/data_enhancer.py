@@ -16,9 +16,9 @@ from PIL import Image, ImageOps
 import PIL
 
 imgs = []
-path = "downloadedFiles/"
+path = "Benign/"
 
-nameOfAFile = "ISIC_0000078.jpg"
+nameOfAFile = "0_ISIC_0000078.jpg"
 
 
 # def transformHorizontalFlip(imagePath):
@@ -106,20 +106,14 @@ def downsampleDataset(imagePath, finalDimX, finalDimY):
             
             borderX = int((new_size[0]-old_size[0])/2)
             borderY = int((new_size[1]-old_size[1])/2)
+
+            checkX = old_size[0] + borderX*2 - finalDimX
+            checkY = old_size[1] + borderY*2 - finalDimY
+
+            border=(borderX, borderY, borderX-checkX, borderY-checkY)
             
-            border=(borderX, borderY, borderX+1, borderY+1)
-            
-            PILImg =  Image.fromarray(np.uint8(image_downscaled))            
+            PILImg =  Image.fromarray(np.uint8(image_downscaled))
             image_downscaled = ImageOps.expand(PILImg, border)
-            
-# =============================================================================
-#         if deltaX > 0:
-#             print("crop X")
-#             
-#             
-#             
-#             new_im = image_downscaled.crop(161, 166, 706, 1050)
-# =============================================================================
         
         misc.imsave(imagePath[:-4] + "_downsampled.jpg", image_downscaled)
 

@@ -12,7 +12,9 @@ from scipy import misc
 import cv2
 
 imgs = []
-path = "downloadedFiles/ISIC-images/UDA-1"   
+path = "downloadedFiles/"   
+
+nameOfAFile = "ISIC_0000078.jpg"
 
 
 def transformHorizontalFlip(imagePath):
@@ -56,26 +58,7 @@ def transformColorJitter(imagePath):
     transform = transforms.ColorJitter(brightness=0.4, contrast=0.4, saturation=0.4, hue=0.02)
     transformed = transform(image)
 
-    transformed.save(path + "/" + os.path.splitext(file)[0] + "_colorJittered" + os.path.splitext(file)[1])        
-
-
-def downsampleDataset(imagePath, finalDimX):
-    image = io.imread(imagePath)
-    
-    dimX = image.shape[0]
-    dimY = image.shape[0]
-    
-    downSamplingFactor = finalDimX/dimX
-    
-    newDimX = int(downSamplingFactor*dimX)
-    newDimY = int(downSamplingFactor*dimY)
-    
-    print("Downsampling to (" + str(newDimX) + ";" + str(newDimY) + ") -> Ratio= %.3f" % downSamplingFactor) 
-    
-    arr = np.array(image)
-    image_downscaled = downscale_local_mean(arr, (4, 4, 1))
-    
-    misc.imsave(imagePath[:-4] + "_downsampled.jpg", image_downscaled)
+    transformed.save(path + "/" + os.path.splitext(file)[0] + "_colorJittered" + os.path.splitext(file)[1])   
 
 
 def transformBlurringImage(imagePath, blurringFactor):
@@ -85,102 +68,47 @@ def transformBlurringImage(imagePath, blurringFactor):
     kernel = np.ones((blurringFactor,blurringFactor),np.float32)/(blurringFactor*blurringFactor)
     dst = cv2.filter2D(img,-1,kernel)
 
-    cv2.imwrite(imagePath[:-4] + "_blurred.jpg", dst)
+    cv2.imwrite(imagePath[:-4] + "_blurred.jpg", dst)     
 
- 
 
+def downsampleDataset(imagePath, finalDimX):
+    image = io.imread(imagePath)
+    
+    dimX = image.shape[0]
+    dimY = image.shape[1]
+    
+    if dimX > finalDimX:
+        downSamplingFactor = finalDimX/dimX
+        
+        newDimX = int(downSamplingFactor*dimX)
+        newDimY = int(downSamplingFactor*dimY)
+        
+        print("Downsampling image " + str(imagePath) + "to (" + str(newDimX) + ";" + str(newDimY) + ") -> Ratio= %.3f" % downSamplingFactor) 
+        
+        arr = np.array(image)
+        image_downscaled = downscale_local_mean(arr, (4, 4, 1))
+        
+        misc.imsave(imagePath[:-4] + "_downsampled.jpg", image_downscaled)
+        
+    print("Skipping image " + str(imagePath) + "with size " + str(dimX) + ";" + str(dimY))  
 
 
 
 if os.path.exists(path) == 0 or len(os.listdir(path)) == 0:
-    print("Images not found. Put the data set in: downloadedFiles/ISIC-images/UDA-1 folder")
+    print("Images not found. Put the data set in: downloadedFiles")
     sys.exit()
     
-
     
 valid_images = [".jpg"]
 for file in os.listdir(path):
     ext = os.path.splitext(file)[1]
     
     if ext.lower() in valid_images:
-        if len(file) == 16:
+        if len(file) == len(nameOfAFile):
             transformHorizontalFlip(path + "/" + file)            
             transformRotation(path + "/" + file)
-            
-            transformRndCrop(path + "/" + file)
-            
+            transformRndCrop(path + "/" + file)        
             transformColorJitter(path + "/" + file)
             transformBlurringImage(path + "/" + file, 25)
-            downsampleDataset(path + "/" + file, 250)
+            downsampleDataset(path + "/" + file, 256)
 
-
-# # #Random crop 2
-# # transform = transforms.FiveCrop((220, 220))
-# # f, axes = plt.subplots(2, 3, figsize=(12.8, 9.6))
-# # axes = [ax for axs in axes for ax in axs]
-# # transformed = transform(image)
-# # for i in range(5):
-# #     axes[i].imshow(transformed[i])
-# #     axes[i].axis('off')
-# # =============================================================================
-#     
-#     
-# #Color jitter
-# transform = transforms.ColorJitter(brightness=0.4, contrast=0.4, saturation=0.4, hue=0.02)
-# 
-# f, axes = plt.subplots(2, 3, figsize=(12.8, 9.6))
-# axes = [ax for axs in axes for ax in axs]
-# for i in range(6):
-#     transformed = transform(image)
-#     axes[i].imshow(transformed)
-#     axes[i].axis('off')
-#     
-#     
-# # =============================================================================
-# # #Random resized crop
-# # transform = transforms.RandomResizedCrop(220, scale=(0.2, 1.0), ratio=(0.75, 1.333))
-# # 
-# # f, axes = plt.subplots(2, 3, figsize=(12.8, 9.6))
-# # axes = [ax for axs in axes for ax in axs]
-# # for i in range(6):
-# #     transformed = transform(image)
-# #     axes[i].imshow(transformed)
-# #     axes[i].axis('off')
-# # =============================================================================
-#     
-#     
-# #Random rotation
-# transform = transforms.RandomRotation(45)
-# 
-# f, axes = plt.subplots(2, 3, figsize=(12.8, 9.6))
-# axes = [ax for axs in axes for ax in axs]
-# for i in range(6):
-#     transformed = transform(image)
-#     axes[i].imshow(transformed)
-#     axes[i].axis('off')  
-#     
-#     
-# #Random affine transform
-# transform = transforms.RandomAffine(degrees=15, translate=(0.1, 0.1), scale=(0.8, 1.3), shear=10)
-# 
-# f, axes = plt.subplots(2, 3, figsize=(12.8, 9.6))
-# axes = [ax for axs in axes for ax in axs]
-# for i in range(6):
-#     transformed = transform(image)
-#     axes[i].imshow(transformed)
-#     axes[i].axis('off')
-#     
-# #Composition of transforms
-# transform = transforms.Compose([
-#                     transforms.RandomCrop((220, 220)),
-#                     transforms.RandomHorizontalFlip(),
-#                     transforms.ColorJitter(0.2, 0.6)
-#             ])
-# 
-# f, axes = plt.subplots(2, 3, figsize=(12.8, 9.6))
-# axes = [ax for axs in axes for ax in axs]
-# for i in range(6):
-#     transformed = transform(image)
-#     axes[i].imshow(transformed)
-#     axes[i].axis('off')
-# =============================================================================

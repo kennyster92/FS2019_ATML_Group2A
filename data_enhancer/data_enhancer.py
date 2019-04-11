@@ -16,7 +16,7 @@ from PIL import Image, ImageOps
 import PIL
 
 imgs = []
-path = "Benign/"
+path = "Malignant"
 
 nameOfAFile = "0_ISIC_0000078.jpg"
 
@@ -76,49 +76,53 @@ nameOfAFile = "0_ISIC_0000078.jpg"
 
 
 def downsampleDataset(imagePath, finalDimX, finalDimY):
-    image = Image.open(imagePath)
-    
-    dimX, dimY = image.size
-    
-    if dimX != finalDimX or dimY != finalDimY:
-        downSamplingFactor = finalDimX/dimX
-        
-        newDimX = int(dimX/int((1/downSamplingFactor)+1))
-        newDimY = int(dimY/int((1/downSamplingFactor)+1))
-        
-        print("Downsampling image " + str(imagePath) + " to (" + str(newDimX) + ";" + str(newDimY) + ") -> Ratio = %.3f" % downSamplingFactor)
-        
-        arr = np.array(image)
-        image_downscaled = downscale_local_mean(arr, (int((1/downSamplingFactor)+1), int((1/downSamplingFactor)+1), 1))
-        
-        deltaX = image_downscaled.shape[1] - finalDimX
-        deltaY = image_downscaled.shape[0] - finalDimY
-        
-        print("Black border size [width;height] = (" + str(deltaX) + ";" + str(deltaY) + ")")
-        
-        if deltaX != 0 or deltaY != 0:
-        
-            new_size = (finalDimX, finalDimY)
-            
-            dimX, dimY = image.size
-            
-            old_size = (image_downscaled.shape[1], image_downscaled.shape[0])
-            
-            borderX = int((new_size[0]-old_size[0])/2)
-            borderY = int((new_size[1]-old_size[1])/2)
-
-            checkX = old_size[0] + borderX*2 - finalDimX
-            checkY = old_size[1] + borderY*2 - finalDimY
-
-            border=(borderX, borderY, borderX-checkX, borderY-checkY)
-            
-            PILImg =  Image.fromarray(np.uint8(image_downscaled))
-            image_downscaled = ImageOps.expand(PILImg, border)
-        
-        misc.imsave(imagePath[:-4] + "_downsampled.jpg", image_downscaled)
+    if os.path.exists(imagePath[:-4] + "_downsampled.jpg") == 1:
+        print(imagePath[:-4] + "_downsampled.jpg existing -> skip")
 
     else:
-        print("Skipping image " + str(imagePath) + "with size " + str(dimX) + ";" + str(dimY))
+        image = Image.open(imagePath)
+
+        dimX, dimY = image.size
+
+        if dimX != finalDimX or dimY != finalDimY:
+            downSamplingFactor = finalDimX/dimX
+
+            newDimX = int(dimX/int((1/downSamplingFactor)+1))
+            newDimY = int(dimY/int((1/downSamplingFactor)+1))
+
+            print("Downsampling image " + str(imagePath) + " to (" + str(newDimX) + ";" + str(newDimY) + ") -> Ratio = %.3f" % downSamplingFactor)
+
+            arr = np.array(image)
+            image_downscaled = downscale_local_mean(arr, (int((1/downSamplingFactor)+1), int((1/downSamplingFactor)+1), 1))
+
+            deltaX = image_downscaled.shape[1] - finalDimX
+            deltaY = image_downscaled.shape[0] - finalDimY
+
+            print("Black border size [width;height] = (" + str(deltaX) + ";" + str(deltaY) + ")")
+
+            if deltaX != 0 or deltaY != 0:
+
+                new_size = (finalDimX, finalDimY)
+
+                dimX, dimY = image.size
+
+                old_size = (image_downscaled.shape[1], image_downscaled.shape[0])
+
+                borderX = int((new_size[0]-old_size[0])/2)
+                borderY = int((new_size[1]-old_size[1])/2)
+
+                checkX = old_size[0] + borderX*2 - finalDimX
+                checkY = old_size[1] + borderY*2 - finalDimY
+
+                border=(borderX, borderY, borderX-checkX, borderY-checkY)
+
+                PILImg =  Image.fromarray(np.uint8(image_downscaled))
+                image_downscaled = ImageOps.expand(PILImg, border)
+
+            misc.imsave(imagePath[:-4] + "_downsampled.jpg", image_downscaled)
+
+        else:
+            print("Skipping image " + str(imagePath) + "with size " + str(dimX) + ";" + str(dimY))
 
 
 

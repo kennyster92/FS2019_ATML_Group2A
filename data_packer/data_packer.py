@@ -1,25 +1,10 @@
 import os
 import numpy as np
-import PIL
 
-fileNameIMGS = "BenignAndMalignant20000DatasetIMG.npy"
 fileNameTAGS = "BenignAndMalignant20000DatasetTAG.npy"
 imagesPath = "BenignAndMalignant20000Dataset"
 
-def packImage(fileNameIMGS, fileNameTAGS, imageName):
-    
-    image = PIL.Image.open(imagesPath + "/" + imageName)
-
-    if os.path.exists(fileNameIMGS) == 0:
-        image_expand = np.expand_dims(image, 0)
-        np.save(fileNameIMGS, image_expand)
-    
-    else:
-        all_im = np.load(fileNameIMGS)
-        image_expand = np.expand_dims(image, 0)
-        img_cat = np.concatenate((all_im, image_expand))
-        np.save(fileNameIMGS, img_cat)
-            
+def packImage(fileNameTAGS, imageName):
         
     if os.path.exists(fileNameTAGS) == 0:
         tag_expand = np.expand_dims(imageName[0:1], 0)
@@ -36,8 +21,8 @@ i = 1
 listOfFiles = os.listdir(imagesPath)
 for file in listOfFiles:
     
-    print("Packing image " + str(i) + "/" + str(len(listOfFiles)))
-    packImage(fileNameIMGS, fileNameTAGS, file)
+    print("Packing tag " + str(i) + "/" + str(len(listOfFiles)))
+    packImage(fileNameTAGS, file)
     i = i + 1
     
 print("Done")

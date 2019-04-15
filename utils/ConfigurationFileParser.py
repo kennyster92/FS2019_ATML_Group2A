@@ -1,4 +1,5 @@
 import json
+import bin.cnn.Alexnet as alexnet
 
 
 class ConfigurationFileParser:
@@ -22,8 +23,8 @@ class ConfigurationFileParser:
         jsonFile.close()
 
     def getModel(self):
-        if self.model == 'unet2d':
-            return 'unet2d'
+        if self.model == 'alexnet':
+            return None
         elif True:
             return None
         else:

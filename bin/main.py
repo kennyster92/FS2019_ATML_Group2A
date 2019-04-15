@@ -21,6 +21,13 @@ if __name__ == '__main__':
         default='./config/config.json',
         help='Path to the configuration file.'
     )
+    parser.add_argument(
+        '--data_path',
+        dest="data_path",
+        type=str,
+        default='../data',
+        help='Path to the data.'
+    )
     parser.add_argument("-q", "--quiet",
                         dest="verbose", default=True,
                         help="Don't print status messages to stdout")
@@ -28,6 +35,7 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     config = args.__getattribute__('config_file_path')
+    data_path = args.__getattribute__('data_path')
     verbose = args.__getattribute__('verbose')
 
     configuration = conf.ConfigurationFileParser(config)
@@ -37,13 +45,19 @@ if __name__ == '__main__':
     loss = configuration.getLoss()
     scheduler = configuration.getScheduler()
     epochs = configuration.getEpochs()
-    batchSize = configuration.getBatchSize()
+    batch_size = configuration.getBatchSize()
     channels = configuration.getChannels()
     lr = configuration.getLearningRate()
     dropout = configuration.getDropout()
 
-    train_dataloader = None
-    val_dataloader = None
+    # TODO: implement Dataset class
+    train_dataset = Dataset(data_path + "/train")
+    val_dataset = Dataset(data_path + "/val")
+    test_dataset = Dataset(data_path + "/test")
+
+    train_dataloader = torch.utils.data.DataLoader(train_dataset, batch_size=batch_size, shuffle=True)
+    val_dataloader = torch.utils.data.DataLoader(val_dataset, batch_size=batch_size, shuffle=True)
+    test_dataloader = torch.utils.data.DataLoader(test_dataset, batch_size=batch_size, shuffle=True)
 
     if (verbose):
         print(model)
@@ -51,11 +65,16 @@ if __name__ == '__main__':
         print(loss)
         print(scheduler)
         print(epochs)
-        print(batchSize)
+        print(batch_size)
         print(channels)
         print(lr)
         print(dropout)
 
-
+    # Train of the model
     trainer = train.Trainer()
     train_losses, train_accuracies, val_losses, val_accuracies = trainer.fit(train_dataloader, val_dataloader, model, optimizer, loss, epochs, scheduler)
+
+
+    # Test of the model
+    # tester = test.Tester()
+    # test_losses, test_accuracies = tester.predict(test_dataloader, model, optimizer, loss)

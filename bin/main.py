@@ -1,10 +1,16 @@
 from itertools import dropwhile
 
 import torch
+import numpy as np
 from argparse import ArgumentParser
 import utils.ConfigurationFileParser as conf
 import bin.test.Testing as test
 import bin.train.Training as train
+import bin.train.MelanomaDataset as data
+
+import torch.nn as nn
+import torch.optim as optim
+import cnn.Alexnet as alexnet
 
 if __name__ == '__main__':
     """The program's entry point.
@@ -38,10 +44,12 @@ if __name__ == '__main__':
     data_path = args.__getattribute__('data_path')
     verbose = args.__getattribute__('verbose')
 
+    device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+
     configuration = conf.ConfigurationFileParser(config)
 
     model = configuration.getModel()
-    optimizer = configuration.getOptimizer()
+    #optimizer = configuration.getOptimizer()
     loss = configuration.getLoss()
     scheduler = configuration.getScheduler()
     epochs = configuration.getEpochs()
@@ -50,28 +58,37 @@ if __name__ == '__main__':
     lr = configuration.getLearningRate()
     dropout = configuration.getDropout()
 
-    # TODO: implement Dataset class
-    train_dataset = Dataset(data_path + "/train")
-    val_dataset = Dataset(data_path + "/val")
-    test_dataset = Dataset(data_path + "/test")
+    # TODO: read images and labels from files
+    images_file = '../data/BenignAndMalignant20000DatasetIMG.npy'
+    labels_file = '../data/BenignAndMalignant20000DatasetTAG.npy'
 
-    train_dataloader = torch.utils.data.DataLoader(train_dataset, batch_size=batch_size, shuffle=True)
-    val_dataloader = torch.utils.data.DataLoader(val_dataset, batch_size=batch_size, shuffle=True)
-    test_dataloader = torch.utils.data.DataLoader(test_dataset, batch_size=batch_size, shuffle=True)
+    images = np.load(images_file)
+    labels = np.load(labels_file)
 
-    if (verbose):
-        print(model)
-        print(optimizer)
-        print(loss)
-        print(scheduler)
-        print(epochs)
-        print(batch_size)
-        print(channels)
-        print(lr)
-        print(dropout)
+    train_imgs = images[0:18000]
+    train_labels = labels[0:18000]
+    val_imgs = images[18000:19000]
+    val_labels = labels[18000:19000]
+    test_imgs = images[19000:20000]
+    test_labels = labels[19000:20000]
+
+    train_dataset = data.MelanomaDataset(train_imgs, train_labels)
+    val_dataset = data.MelanomaDataset(val_imgs, val_labels)
+    test_dataset = data.MelanomaDataset(test_imgs, test_labels)
+
+    train_dataloader = torch.utils.data.DataLoader(train_dataset, batch_size=batch_size, shuffle=False)
+    val_dataloader = torch.utils.data.DataLoader(val_dataset, batch_size=batch_size, shuffle=False)
+    test_dataloader = torch.utils.data.DataLoader(test_dataset, batch_size=batch_size, shuffle=False)
+
+
 
     # Train of the model
     trainer = train.Trainer()
+
+    #model = alexnet.AlexNet()
+    model = model.to(device)  # transfer the neural net onto the GPU
+    optimizer = optim.Adam(model.parameters(), lr=0.001, betas=(0.9, 0.999), eps=1e-08, weight_decay=0, amsgrad=False)
+
     train_losses, train_accuracies, val_losses, val_accuracies = trainer.fit(train_dataloader, val_dataloader, model, optimizer, loss, epochs, scheduler)
 
 

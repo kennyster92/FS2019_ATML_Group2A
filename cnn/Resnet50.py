@@ -23,7 +23,7 @@ print(device)
 train_dir = './.../train'
 test_dir = './.../test'
 val_dir = './.../valid'
-
+#
 
 
 root_dir = train_dir

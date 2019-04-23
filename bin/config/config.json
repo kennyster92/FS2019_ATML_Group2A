@@ -6,7 +6,7 @@
         "optimizer": "SGD",
         "loss_function": "CrossEntropy",
         "scheduler": "stepLR",
-        "experiment_name": "001",
+        "experiment_name": "000",
         "epochs": 20,
         "batch_size": 50,
         "n_channels": 32,

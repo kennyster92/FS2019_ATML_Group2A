@@ -42,7 +42,7 @@ class Trainer:
         losses = []
         n_correct = 0
         for iteration, (images, labels) in enumerate(train_loader):
-            images = images.to(self.device)
+            images = images.to(self.device) # bug here
             labels = labels.to(self.device)
             output = model(images)
             optimizer.zero_grad()

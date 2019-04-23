@@ -14,6 +14,8 @@ from torch.utils.data import DataLoader
 import torch.optim as optim
 import numpy as np
 
+# TODO: Delete all the unnecessary lines of code... keep only the model class
+
 
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 torch.cuda.empty_cache()

@@ -2,7 +2,7 @@
     "config": {
         "result_dir": "C:/Users/Kevin/Desktop/FS2019_ATML_Group2A/results/",
         "model_dir": "C:/Users/Kevin/Desktop/FS2019_ATML_Group2A/models/",
-        "model": "unet2d",
+        "model": "alexnet",
         "optimizer": "SGD",
         "loss_function": "CrossEntropy",
         "scheduler": "stepLR",

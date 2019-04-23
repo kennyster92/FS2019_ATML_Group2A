@@ -31,6 +31,8 @@ class Trainer:
                     val_losses[-1],
                     val_accuracies[-1]))
 
+        # TODO: save the model to file
+
         return train_losses, train_accuracies, val_losses, val_accuracies
 
     def train(self, model, train_loader, optimizer, loss_fn):

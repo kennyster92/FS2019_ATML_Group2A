@@ -1,6 +1,7 @@
 import json
-import bin.cnn.Alexnet as alexnet
-
+import cnn.Alexnet as alexnet
+import torch.nn as nn
+#
 
 class ConfigurationFileParser:
 
@@ -24,8 +25,8 @@ class ConfigurationFileParser:
 
     def getModel(self):
         if self.model == 'alexnet':
-            return None
-        elif True:
+            return alexnet.AlexNet()
+        elif self.model == 'None':
             return None
         else:
             return None
@@ -33,14 +34,14 @@ class ConfigurationFileParser:
     def getOptimizer(self):
         if self.optimizer == 'SGD':
             return 'SGD'
-        elif True:
-            return None
+        elif self.optimizer == 'adam':
+            return optim.Adam(model.parameters(), lr=0.001, betas=(0.9, 0.999), eps=1e-08, weight_decay=0, amsgrad=False)
         else:
             return None
 
     def getLoss(self):
         if self.loss == 'CrossEntropy':
-            return 'CrossEntropy'
+            return nn.CrossEntropyLoss()
         elif True:
             return None
         else:

@@ -2,10 +2,10 @@ from torch.utils.data import Dataset
 
 
 class MelanomaDataset(Dataset):
-    # write your code
+
     def __init__(self, image, label, transform=None):
         self.image = image  # our image
-        self.label = label  # our related center
+        self.label = label  # our diagnosy
         self.transform = transform
 
     def __getitem__(self, index):

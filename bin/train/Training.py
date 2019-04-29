@@ -44,7 +44,9 @@ class Trainer:
         losses = []
         n_correct = 0
         for iteration, (images, labels) in enumerate(train_loader):
-            images = images.to(self.device) # bug here
+            images = images.float()
+            labels = labels.float()
+            images = images.to(self.device)
             labels = labels.to(self.device)
             output = model(images)
             optimizer.zero_grad()
@@ -67,6 +69,8 @@ class Trainer:
         n_correct = 0
         with torch.no_grad():
             for images, labels in validation_loader:
+                images = images.float()
+                labels = labels.float()
                 images = images.to(self.device)
                 labels = labels.to(self.device)
                 output = model(images)

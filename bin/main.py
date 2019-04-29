@@ -11,6 +11,8 @@ import bin.train.MelanomaDataset as data
 import torch.nn as nn
 import torch.optim as optim
 import cnn.Alexnet as alexnet
+import cnn.LinearModel as lm
+
 
 if __name__ == '__main__':
     """The program's entry point.
@@ -81,11 +83,10 @@ if __name__ == '__main__':
     test_dataloader = torch.utils.data.DataLoader(test_dataset, batch_size=batch_size, shuffle=False)
 
 
-
     # Train of the model
     trainer = train.Trainer()
 
-    #model = alexnet.AlexNet()
+    model = lm.LinearModel(147456)
     model = model.to(device)  # transfer the neural net onto the GPU
     optimizer = optim.Adam(model.parameters(), lr=0.001, betas=(0.9, 0.999), eps=1e-08, weight_decay=0, amsgrad=False)
 

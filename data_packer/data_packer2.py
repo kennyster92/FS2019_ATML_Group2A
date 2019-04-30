@@ -1,26 +1,35 @@
+#Use this packer to create images and tags npy files
+
 import os
 import numpy as np
-#import PIL
-from PIL import Image
+import PIL
+
 fileNameIMGS = "BenignAndMalignant20000DatasetIMG.npy"
+fileNameTAGS = "BenignAndMalignant20000DatasetTAG.npy"
+
 imagesPath = "BenignAndMalignant20000Dataset"
 
 listOfFiles = os.listdir(imagesPath)
 
 imageArray = []
+tagArray = []
 i = 1
 
 for file in listOfFiles:
+    print("Packing image " + str(i) + "/" + str(len(listOfFiles)) + " -> " + file)
     
-    print(imagesPath + "/" + file)
+    image = PIL.Image.open(imagesPath + "/" + file)
     
-    # image = PIL.Image.open(imagesPath + "/" + file)
-    image = Image.open(imagesPath + "/" + file)
-
     imageArray.append(np.array(image))
+    tagArray.append(file[0:1])
     
-    print("Packing image " + str(i) + "/" + str(len(listOfFiles)))
     i = i + 1
  
+print("Writing images npy file...")
 np.save(fileNameIMGS, imageArray)
+
+print("Writing tags npy file...")
+np.save(fileNameTAGS, tagArray)
+
+
 print("Done")

@@ -1,11 +1,10 @@
 import numpy as np
 from PIL import Image
 
-#img_array = np.load('BenignAndMalignant20000DatasetIMG.npy')
-tag_array = np.load('BenignAndMalignant20000DatasetTAG.npy')
+img_array = np.load('../data/BenignAndMalignant20000DatasetIMG.npy')
+tags_array = np.load('../data/BenignAndMalignant20000DatasetTAG.npy')
 
-print(tag_array[9999])
+im = Image.fromarray(img_array[18000])
+print("TAG = ", tags_array[18000])
 
-#im = Image.fromarray(img_array[100])
-
-#im.show()
+im.show()

@@ -1,4 +1,5 @@
 import torch
+import numpy as np
 
 
 class Trainer:
@@ -21,8 +22,8 @@ class Trainer:
             train_accuracies.append(train_accuracy)
             val_losses.append(val_loss)
             val_accuracies.append(val_accuracy)
-            if scheduler:
-                scheduler.step()  # argument only needed for ReduceLROnPlateau
+            #if scheduler:
+                #scheduler.step()  # argument only needed for ReduceLROnPlateau
             print(
                 'Epoch {}/{}: train_loss: {:.4f}, train_accuracy: {:.4f}, val_loss: {:.4f}, val_accuracy: {:.4f}'.format(
                     epoch + 1, n_epochs,
@@ -45,11 +46,12 @@ class Trainer:
         n_correct = 0
         for iteration, (images, labels) in enumerate(train_loader):
             images = images.float()
-            labels = labels.float()
+            labels = labels.long()
             images = images.to(self.device)
             labels = labels.to(self.device)
             output = model(images)
             optimizer.zero_grad()
+
             loss = loss_fn(output, labels)
             loss.backward()
             optimizer.step()
@@ -70,7 +72,7 @@ class Trainer:
         with torch.no_grad():
             for images, labels in validation_loader:
                 images = images.float()
-                labels = labels.float()
+                labels = labels.long()
                 images = images.to(self.device)
                 labels = labels.to(self.device)
                 output = model(images)

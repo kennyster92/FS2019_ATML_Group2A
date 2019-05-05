@@ -3,14 +3,14 @@ from itertools import dropwhile
 import torch
 import numpy as np
 from argparse import ArgumentParser
-import utils.ConfigurationFileParser as conf
-import bin.test.Testing as test
-import bin.train.Training as train
-import bin.train.MelanomaDataset as data
+from utils import ConfigurationFileParser as conf
+from bin.test import Testing as test
+from bin.train import Training as train
+from bin.train import MelanomaDataset as data
 
 import torch.nn as nn
 import torch.optim as optim
-import cnn.Alexnet as alexnet
+from cnn import Alexnet as alexnet
 import cnn.LinearModel as lm
 
 
@@ -86,11 +86,12 @@ if __name__ == '__main__':
     # Train of the model
     trainer = train.Trainer()
 
-    model = lm.LinearModel(147456)
+    #model = lm.LinearModel(147456)
+    model = alexnet.AlexNet()
     model = model.to(device)  # transfer the neural net onto the GPU
     optimizer = optim.Adam(model.parameters(), lr=0.001, betas=(0.9, 0.999), eps=1e-08, weight_decay=0, amsgrad=False)
 
-    train_losses, train_accuracies, val_losses, val_accuracies = trainer.fit(train_dataloader, val_dataloader, model, optimizer, loss, epochs, scheduler)
+    train_losses, train_accuracies, val_losses, val_accuracies = trainer.fit(train_dataloader, val_dataloader, model, optimizer, loss, epochs)
 
 
     # Test of the model

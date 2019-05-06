@@ -11,6 +11,7 @@ from bin.train import MelanomaDataset as data
 import torch.nn as nn
 import torch.optim as optim
 from cnn import Alexnet as alexnet
+from cnn import Resnet50 as resnet
 import cnn.LinearModel as lm
 
 
@@ -74,6 +75,8 @@ if __name__ == '__main__':
     test_imgs = images[19000:20000]
     test_labels = labels[19000:20000]
 
+    # TODO: shuffle the arrays, now there are before only negative cases and then positive cases
+
     train_dataset = data.MelanomaDataset(train_imgs, train_labels)
     val_dataset = data.MelanomaDataset(val_imgs, val_labels)
     test_dataset = data.MelanomaDataset(test_imgs, test_labels)
@@ -86,10 +89,16 @@ if __name__ == '__main__':
     # Train of the model
     trainer = train.Trainer()
 
-    #model = lm.LinearModel(147456)
-    model = alexnet.AlexNet()
+    # model = lm.LinearModel(147456)
+
+    # model = alexnet.AlexNet()
+    # model = model.to(device)  # transfer the neural net onto the GPU
+    # optimizer = optim.Adam(model.parameters(), lr=0.001, betas=(0.9, 0.999), eps=1e-08, weight_decay=0, amsgrad=False)
+
+    model = resnet.resnet50()
     model = model.to(device)  # transfer the neural net onto the GPU
-    optimizer = optim.Adam(model.parameters(), lr=0.001, betas=(0.9, 0.999), eps=1e-08, weight_decay=0, amsgrad=False)
+    optimizer = optim.SGD(model.parameters(), lr=0.0001, momentum=0.9)  # for ResNet
+
 
     train_losses, train_accuracies, val_losses, val_accuracies = trainer.fit(train_dataloader, val_dataloader, model, optimizer, loss, epochs)
 

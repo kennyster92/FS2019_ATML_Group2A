@@ -109,7 +109,7 @@ class AlexNet(nn.Module):
         self.avgpool = nn.AdaptiveAvgPool2d((6, 6))
         self.classifier = nn.Sequential(
             nn.Dropout(),
-            nn.Linear(256 * 6 * 6, 4096),
+            nn.Linear(256 * 192, 4096),
             nn.ReLU(inplace=True),
             nn.Dropout(),
             nn.Linear(4096, 4096),
@@ -120,7 +120,7 @@ class AlexNet(nn.Module):
     def forward(self, x):
         x = self.features(x)
         x = self.avgpool(x)
-        x = x.view(x.size(0), 256 * 6 * 6)
+        x = x.view(x.size(0), 256 * 192)
         x = self.classifier(x)
         return x
 

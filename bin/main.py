@@ -91,13 +91,13 @@ if __name__ == '__main__':
 
     # model = lm.LinearModel(147456)
 
-    # model = alexnet.AlexNet()
-    # model = model.to(device)  # transfer the neural net onto the GPU
-    # optimizer = optim.Adam(model.parameters(), lr=0.001, betas=(0.9, 0.999), eps=1e-08, weight_decay=0, amsgrad=False)
-
-    model = resnet.resnet50()
+    model = alexnet.AlexNet()
     model = model.to(device)  # transfer the neural net onto the GPU
-    optimizer = optim.SGD(model.parameters(), lr=0.0001, momentum=0.9)  # for ResNet
+    optimizer = optim.Adam(model.parameters(), lr=0.001, betas=(0.9, 0.999), eps=1e-08, weight_decay=0, amsgrad=False)
+
+    #model = resnet.resnet50()
+    #model = model.to(device)  # transfer the neural net onto the GPU
+    #optimizer = optim.SGD(model.parameters(), lr=0.0001, momentum=0.9)  # for ResNet
 
 
     train_losses, train_accuracies, val_losses, val_accuracies = trainer.fit(train_dataloader, val_dataloader, model, optimizer, loss, epochs)

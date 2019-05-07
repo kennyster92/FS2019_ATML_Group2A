@@ -1,0 +1,8 @@
+TODO:
+ - try different Learning rate 
+ - try with resnet pretrained model
+ - try Adam as optimizer optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate, weight_decay=0.004)
+ - try with more epochs
+ - batch size
+ - loss function like hinge loss, squared hinge loss
+

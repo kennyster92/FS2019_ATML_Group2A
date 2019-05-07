@@ -114,7 +114,7 @@ if __name__ == '__main__':
     train_losses, train_accuracies, val_losses, val_accuracies = trainer.fit(train_dataloader, val_dataloader, model, optimizer, loss, epochs)
 
     # save model to file
-    torch.save(model.state_dict(), model_dir)
+    # torch.save(model.state_dict(), model_dir)
 
 
     # load model from a file

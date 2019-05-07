@@ -20,7 +20,7 @@ class ConfigurationFileParser:
         self.channels = int(values['config']['n_channels'])
         self.lr = float(values['config']['learning_rate'])
         self.dropout = float(values['config']['dropout_p'])
-        self.model_dir = float(values['config']['model_dir'])
+        self.model_dir = values['config']['model_dir']
 
         jsonFile.close()
 

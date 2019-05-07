@@ -2,6 +2,7 @@ from itertools import dropwhile
 
 import torch
 import numpy as np
+from torchvision.transforms import ToTensor, Compose, Normalize, Lambda
 from argparse import ArgumentParser
 from utils import ConfigurationFileParser as conf
 from bin.test import Testing as test
@@ -71,20 +72,29 @@ if __name__ == '__main__':
 
     train_imgs = images[0:18000]
     train_labels = labels[0:18000]
+
     val_imgs = images[18000:19000]
     val_labels = labels[18000:19000]
+
     test_imgs = images[19000:20000]
     test_labels = labels[19000:20000]
 
     # TODO: shuffle the arrays, now there are before only negative cases and then positive cases
-
-    train_dataset = data.MelanomaDataset(train_imgs, train_labels)
-    val_dataset = data.MelanomaDataset(val_imgs, val_labels)
-    test_dataset = data.MelanomaDataset(test_imgs, test_labels)
+    Transforms = Compose([ToTensor()])
+    train_dataset = data.MelanomaDataset(train_imgs, train_labels, transform=Transforms)
+    val_dataset = data.MelanomaDataset(val_imgs, val_labels, transform=Transforms)
+    test_dataset = data.MelanomaDataset(test_imgs, test_labels, transform=Transforms)
 
     train_dataloader = torch.utils.data.DataLoader(train_dataset, batch_size=batch_size, shuffle=False)
     val_dataloader = torch.utils.data.DataLoader(val_dataset, batch_size=batch_size, shuffle=False)
     test_dataloader = torch.utils.data.DataLoader(test_dataset, batch_size=batch_size, shuffle=False)
+    #
+    # for image, label in train_dataloader:
+    #     print(image.size(), label.size())
+    #     selected_im = 2
+    #     print(label[selected_im])
+    #     im2show = image[selected_im]
+    #     print(im2show.size())
 
 
     # Train of the model

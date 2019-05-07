@@ -17,7 +17,6 @@ class MelanomaDataset(Dataset):
         if self.transform is not None:
             sel_image = self.transform(sel_image)
 
-        #  TODO define the type of label (1-0, string ???)
         return sel_image, sel_label  # return 2 tensors
 
     def __len__(self):

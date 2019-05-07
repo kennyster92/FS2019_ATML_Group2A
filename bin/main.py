@@ -60,6 +60,7 @@ if __name__ == '__main__':
     channels = configuration.getChannels()
     lr = configuration.getLearningRate()
     dropout = configuration.getDropout()
+    model_dir = configuration.getModelDir()
 
     # TODO: read images and labels from files
     images_file = '../data/BenignAndMalignant20000DatasetIMG.npy'
@@ -102,6 +103,14 @@ if __name__ == '__main__':
 
     train_losses, train_accuracies, val_losses, val_accuracies = trainer.fit(train_dataloader, val_dataloader, model, optimizer, loss, epochs)
 
+    # save model to file
+    torch.save(model.state_dict(), model_dir)
+
+
+    # load model from a file
+    #model = alexnet.AlexNet(*args, **kwargs)
+    #model.load_state_dict(torch.load(model_dir))
+    #model.eval()
 
     # Test of the model
     # tester = test.Tester()

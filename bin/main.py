@@ -8,6 +8,7 @@ from utils import ConfigurationFileParser as conf
 from bin.test import Testing as test
 from bin.train import Training as train
 from bin.train import MelanomaDataset as data
+import matplotlib.pyplot as plt
 
 import torch.nn as nn
 import torch.optim as optim
@@ -49,6 +50,7 @@ if __name__ == '__main__':
     verbose = args.__getattribute__('verbose')
 
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+    print(device)
 
     configuration = conf.ConfigurationFileParser(config)
 
@@ -70,23 +72,23 @@ if __name__ == '__main__':
     images = np.load(images_file)
     labels = np.load(labels_file)
 
-    train_imgs = images[0:18000]
-    train_labels = labels[0:18000]
+    train_imgs = np.concatenate([images[0:9000], images[10000:19000]]) #  18000
+    train_labels = np.concatenate([labels[0:9000], labels[10000:19000]])
 
-    val_imgs = images[18000:19000]
-    val_labels = labels[18000:19000]
+    val_imgs =  np.concatenate([images[9000:9500], images[19000:19500]])  # 1000
+    val_labels =  np.concatenate([labels[9000:9500], labels[19000:19500]])
 
-    test_imgs = images[19000:20000]
-    test_labels = labels[19000:20000]
+    test_imgs = np.concatenate([images[9500:10000], images[19500:20000]])  # 1000
+    test_labels = np.concatenate([labels[9500:10000], labels[19500:20000]])
 
-    # TODO: shuffle the arrays, now there are before only negative cases and then positive cases
+
     Transforms = Compose([ToTensor()])
     train_dataset = data.MelanomaDataset(train_imgs, train_labels, transform=Transforms)
     val_dataset = data.MelanomaDataset(val_imgs, val_labels, transform=Transforms)
     test_dataset = data.MelanomaDataset(test_imgs, test_labels, transform=Transforms)
 
-    train_dataloader = torch.utils.data.DataLoader(train_dataset, batch_size=batch_size, shuffle=False)
-    val_dataloader = torch.utils.data.DataLoader(val_dataset, batch_size=batch_size, shuffle=False)
+    train_dataloader = torch.utils.data.DataLoader(train_dataset, batch_size=batch_size, shuffle=True)
+    val_dataloader = torch.utils.data.DataLoader(val_dataset, batch_size=batch_size, shuffle=True)
     test_dataloader = torch.utils.data.DataLoader(test_dataset, batch_size=batch_size, shuffle=False)
     #
     # for image, label in train_dataloader:
@@ -102,16 +104,41 @@ if __name__ == '__main__':
 
     # model = lm.LinearModel(147456)
 
-    model = alexnet.AlexNet()
-    model = model.to(device)  # transfer the neural net onto the GPU
-    optimizer = optim.Adam(model.parameters(), lr=0.001, betas=(0.9, 0.999), eps=1e-08, weight_decay=0, amsgrad=False)
+    # model = alexnet.AlexNet()
+    # model = model.to(device)  # transfer the neural net onto the GPU
+    # optimizer = optim.Adam(model.parameters(), lr=0.001, betas=(0.9, 0.999), eps=1e-08, weight_decay=0, amsgrad=False)
 
-    #model = resnet.resnet50()
-    #model = model.to(device)  # transfer the neural net onto the GPU
-    #optimizer = optim.SGD(model.parameters(), lr=0.0001, momentum=0.9)  # for ResNet
+    model = resnet.resnet50()
+    model = model.to(device)  # transfer the neural net onto the GPU
+    optimizer = optim.SGD(model.parameters(), lr=0.001, momentum=0.9)  # for ResNet
 
 
     train_losses, train_accuracies, val_losses, val_accuracies = trainer.fit(train_dataloader, val_dataloader, model, optimizer, loss, epochs)
+
+
+    def plot_loss(n_epochs, train_losses, val_losses):
+        plt.figure()
+        plt.plot(np.arange(n_epochs), train_losses)  # display evenly scale with arange
+        plt.plot(np.arange(n_epochs), val_losses)
+        plt.legend(['train_loss', 'val_loss'])
+        plt.xlabel('epoch')
+        plt.ylabel('loss value')
+        plt.title('Train/val loss')
+
+
+    plot_loss(epochs, train_losses, val_losses)
+
+
+    def plot_acc(n_epochs, train_accuracy, val_accuracy):
+        plt.figure()
+        plt.plot(np.arange(n_epochs), train_accuracy)  # display evenly scale with arange
+        plt.plot(np.arange(n_epochs), val_accuracy)
+        plt.legend(['train_accuracy', 'val_accuracy'])
+        plt.xlabel('epoch')
+        plt.ylabel('accuracy value')
+        plt.title('Train/val accuracy');
+    plot_acc(epochs, train_accuracy, val_accuracy )
+
 
     # save model to file
     # torch.save(model.state_dict(), model_dir)

@@ -11,80 +11,23 @@ from torchvision.transforms import Resize, ToTensor, Normalize, Compose #Compose
 from torch.utils.data import DataLoader
 import numpy as np
 
-# TODO: Delete all the unnecessary lines of code... keep only the model class
-#
-#
-# device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-# torch.cuda.empty_cache()
-# print(device)
-#
-# #  TODO link the folder containing images
-# images_file = './data/images.npy'
-# labels_file = './data/labels.npy'
-#
-#
-# #root_dir = train_dir
-#
-# #  TODO choose the image size
-# target_size = (224,224) #size of the image after transformation
-# transforms = Compose([Resize(target_size), # Resize image
-#                     ToTensor(),           # Converts to Tensor, scales to [0, 1] float (from [0, 255] int)
-#                     Normalize(mean=(0.5, 0.5, 0.5,), std=(0.5, 0.5, 0.5)), # scales to [-1.0, 1.0]
-#                     ])
-#
-# images = np.load(images_file)
-# labels = np.load(labels_file)
-#
-#
-# #  TODO selection batch size
-# batch_size = 4
-
-# creation of the Dataset class --------------------------
-
-
-# Parameter description --------------------------
-#  DataLoader(Dataset,int,bool,int)
-#  dataset (Dataset) – dataset from which to load the data.
-#  batch_size (int, optional) – how many samples per batch to load (default: 1)
-#  shuffle (bool, optional) – set to True to have the data reshuffled at every epoch (default: False).
-#  num_workers = n - how many threads in background for efficient loading
-#
-#
-# transforms = Compose([ToTensor()])
-#
-# #  TODO split data in 3 different sent of images
-# train_dataset = DigitDataset(train_im, train_label, transforms)
-# val_dataset = DigitDataset(val_im, va_label, transforms)
-# test_dataset = DigitDataset(test_im, test_label, transforms)
-#
-# # use dataloader and give dataset in parameter
-#
-# train_dataloader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True, num_workers=2)
-# val_dataloader = DataLoader(val_dataset, batch_size=batch_size, shuffle=True, num_workers=2)
-# test_dataloader = DataLoader(test_dataset, batch_size=8, shuffle=False, num_workers=2)
-#
-#
-#
-#
-# #  TODO test if dataset are good implemented, with a label for each image
-# #  try to iterate over the train dataset
-# for image, label in train_dataloader:
-#     print(image.size(), label.size())
-#     print(label)
-#     break #  break here just to show 1 batch of data
-#
-#
-# #  try to iterate over the validation dataset
-# for image, label in val_dataloader:
-#     print(image.size(), label.size())
-#     print(label)
-#     break #  break here just to show 1 batch of data
-
 #  Alexnet implementation---------------------------------------------------------------------------------------------
 
 
 import torch.nn as nn
-import torch.nn.functional as F
+import torch.utils.model_zoo as model_zoo
+
+
+__all__ = ['ResNet', 'resnet18', 'resnet34', 'resnet50', 'resnet101',
+           'resnet152']
+
+model_urls = {
+    'resnet18': 'https://download.pytorch.org/models/resnet18-5c106cde.pth',
+    'resnet34': 'https://download.pytorch.org/models/resnet34-333f7ec4.pth',
+    'resnet50': 'https://download.pytorch.org/models/resnet50-19c8e357.pth',
+    'resnet101': 'https://download.pytorch.org/models/resnet101-5d3b4d8f.pth',
+    'resnet152': 'https://download.pytorch.org/models/resnet152-b121ed2d.pth',
+}
 
 
 class AlexNet(nn.Module):

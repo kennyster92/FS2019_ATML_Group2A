@@ -67,6 +67,8 @@ if __name__ == '__main__':
     model_dir = configuration.getModelDir()
     experiment_name = configuration.getExperimentName()
 
+    print("I am using configuration file number " + experiment_name)
+
     # Creation of the datasets
     images_file = data_path + 'BenignAndMalignant20000DatasetIMG.npy'
     labels_file = data_path + 'BenignAndMalignant20000DatasetTAG.npy'

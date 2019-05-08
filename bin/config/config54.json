@@ -1,0 +1,19 @@
+{
+    "config": {
+        "result_dir": "../results/",
+        "model_dir": "../models/",
+        "model": "resnet50",
+        "optimizer": "sgd",
+        "loss_function": "CrossEntropy",
+        "scheduler": "none",
+        "experiment_name": 54,
+        "epochs": 30,
+        "batch_size": 64,
+        "learning_rate": 0.0001,
+        "pretrained": "false"
+    },
+    "meta": {
+        "type": "",
+        "version": 1
+    }
+}

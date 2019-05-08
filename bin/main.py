@@ -25,7 +25,7 @@ if __name__ == '__main__':
 
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
-    print("Welcome! The program is running on " + device + ". It may take a while...")
+    print("Welcome! The program is running on " + device.__str__() + ". It may take a while...")
 
     # Parameters that can be given by command line
     parser = ArgumentParser(description='Deep learning for melanoma detection')

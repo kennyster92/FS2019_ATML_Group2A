@@ -68,5 +68,5 @@ class ConfigurationFileParser:
         return self.model_dir
 
     def getExperimentName(self):
-        return self.experiment_name
+        return str(self.experiment_name)
 

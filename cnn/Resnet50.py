@@ -4,78 +4,10 @@
 Resnet50 structure
 """
 
-import os
-import torch
+
 import torch.nn as nn
 import math
-from torchvision.datasets import ImageFolder #imageFolder is a data loader
-from torchvision.transforms import Resize, ToTensor, Normalize, Compose #Composes several transforms together
-from torch.utils.data import DataLoader
-import torch.optim as optim
-import numpy as np
 
-# TODO: Delete all the unnecessary lines of code... keep only the model class
-#
-#
-# device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-# torch.cuda.empty_cache()
-# print(device)
-#
-# #  TODO link the folder containing images
-# train_dir = './.../train'
-# test_dir = './.../test'
-# val_dir = './.../valid'
-# #
-#
-#
-# root_dir = train_dir
-#
-# #  TODO choose the image size
-# target_size = (224,224) #size of the image after transformation
-# transforms = Compose([Resize(target_size), # Resize image
-#                     ToTensor(),           # Converts to Tensor, scales to [0, 1] float (from [0, 255] int)
-#                     Normalize(mean=(0.5, 0.5, 0.5,), std=(0.5, 0.5, 0.5)), # scales to [-1.0, 1.0]
-#                     ])
-#
-# train_dataset = ImageFolder(root_dir, transform=transforms) # takes in an PIL image and returns a transformed version.
-# # len(train_dataset) #contain all images of the set, dereferencable with train_dataset[x][0] -->23000
-# # type(train_dataset)
-#
-#
-# #  TODO selection batch size
-# batch_size = 4
-#
-# # Parameter description --------------------------
-# #  DataLoader(Dataset,int,bool,int)
-# #  dataset (Dataset) – dataset from which to load the data.
-# #  batch_size (int, optional) – how many samples per batch to load (default: 1)
-# #  shuffle (bool, optional) – set to True to have the data reshuffled at every epoch (default: False).
-# #  num_workers = n - how many threads in background for efficient loading
-#
-# train_dataloader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True, num_workers=2)
-#
-# val_root_dir = val_dir
-# val_dataset = ImageFolder(val_root_dir, transform=transforms)
-#
-# val_dataloader = DataLoader(val_dataset, batch_size=batch_size, shuffle=False, num_workers=2) #  shuffle true or false?
-# len(val_dataset)
-#
-# #  TODO test if dataset are good implemented, with a label for each image
-# #  try to iterate over the train dataset
-# for image, label in train_dataloader:
-#     print(image.size(), label.size())
-#     print(label)
-#     break #  break here just to show 1 batch of data
-#
-#
-# #  try to iterate over the validation dataset
-# for image, label in val_dataloader:
-#     print(image.size(), label.size())
-#     print(label)
-#     break #  break here just to show 1 batch of data
-#
-
-#  Resnet_50 implementation---------------------------------------------------------------------------------------------
 
 __all__ = ['ResNet', 'resnet18', 'resnet34', 'resnet50', 'resnet101',
            'resnet152']
@@ -210,7 +142,7 @@ class ResNet(nn.Module):
         x = self.layer2(x)
         x = self.layer3(x)
         x = self.layer4(x)
-        # print(x.size())
+
         x = self.avgpool(x)
 
         x = x.view(x.size(0), -1)

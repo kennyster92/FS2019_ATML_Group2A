@@ -4,5 +4,18 @@ TODO:
  - try Adam as optimizer optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate, weight_decay=0.004)
  - try with more epochs
  - batch size
- - loss function like hinge loss, squared hinge loss
+ - loss function only cross entropy is possible
+
+
+
+
+ Parameters to change for the runs:
+ - "model": "alexnet","resnet50"
+ - "optimizer": "sgd","adam"
+ - "scheduler": "none", "stepLR" (but we can start at the moment only with "none" and see how the results will be)
+ - "experiment_name": "000" (simply increment)
+ - "epochs": 20,25,30
+ - "batch_size": 16,32,64
+ - "learning_rate": 0.001, 0.0001
+ - "pretrained": "true", "false" (but at the moment leave to false)
 

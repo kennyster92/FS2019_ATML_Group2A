@@ -22,8 +22,8 @@ class Trainer:
             train_accuracies.append(train_accuracy)
             val_losses.append(val_loss)
             val_accuracies.append(val_accuracy)
-            #if scheduler:
-                #scheduler.step()  # argument only needed for ReduceLROnPlateau
+            if scheduler:
+                scheduler.step()  # argument only needed for ReduceLROnPlateau
             print(
                 'Epoch {}/{}: train_loss: {:.4f}, train_accuracy: {:.4f}, val_loss: {:.4f}, val_accuracy: {:.4f}'.format(
                     epoch + 1, n_epochs,
@@ -82,7 +82,6 @@ class Trainer:
 
         average_loss = test_loss / len(validation_loader)
         accuracy = 100.0 * n_correct / len(validation_loader.dataset)
-        #     print('Test average loss: {:.4f}, accuracy: {:.3f}'.format(average_loss, accuracy))
 
         return average_loss, accuracy
 

@@ -1,7 +1,9 @@
 import json
-import cnn.Alexnet as alexnet
 import torch.nn as nn
-#
+import cnn.Alexnet as alexnet
+from cnn import Resnet50 as resnet
+import torch.optim as optim
+
 
 class ConfigurationFileParser:
 
@@ -17,41 +19,38 @@ class ConfigurationFileParser:
         self.scheduler = values['config']['scheduler']
         self.epochs = int(values['config']['epochs'])
         self.batchSize = int(values['config']['batch_size'])
-        self.channels = int(values['config']['n_channels'])
         self.lr = float(values['config']['learning_rate'])
-        self.dropout = float(values['config']['dropout_p'])
         self.model_dir = values['config']['model_dir']
+        self.experiment_name = values['config']['experiment_name']
 
         jsonFile.close()
 
     def getModel(self):
         if self.model == 'alexnet':
             return alexnet.AlexNet()
-        elif self.model == 'None':
-            return None
+        elif self.model == 'resnet50':
+            return resnet.resnet50()
         else:
             return None
 
-    def getOptimizer(self):
-        if self.optimizer == 'SGD':
-            return 'SGD'
+    def getOptimizer(self, model, lr):
+        if self.optimizer == 'sgd':
+            return optim.SGD(model.parameters(), lr=lr, momentum=0.9)
         elif self.optimizer == 'adam':
-            return optim.Adam(model.parameters(), lr=0.001, betas=(0.9, 0.999), eps=1e-08, weight_decay=0, amsgrad=False)
+            return optim.Adam(model.parameters(), lr=lr, eps=1e-08, weight_decay=0.04, amsgrad=False)
         else:
             return None
 
     def getLoss(self):
         if self.loss == 'CrossEntropy':
             return nn.CrossEntropyLoss()
-        elif True:
-            return None
         else:
             return None
 
     def getScheduler(self):
         if self.scheduler == 'stepLR':
             return 'stepLR'
-        elif True:
+        elif self.scheduler == 'none':
             return None
         else:
             return None
@@ -62,15 +61,12 @@ class ConfigurationFileParser:
     def getBatchSize(self):
         return self.batchSize
 
-    def getChannels(self):
-        return self.channels
-
     def getLearningRate(self):
         return self.lr
 
-    def getDropout(self):
-        return self.dropout
-
     def getModelDir(self):
-        return self.dropout
+        return self.model_dir
+
+    def getExperimentName(self):
+        return self.experiment_name
 

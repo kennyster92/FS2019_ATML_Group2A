@@ -1,15 +1,16 @@
 {
     "config": {
-        "result_dir": "C:/Users/Kevin/Desktop/FS2019_ATML_Group2A/results/",
-        "model_dir": "C:/Users/Kevin/Desktop/FS2019_ATML_Group2A/models/",
+        "result_dir": "../results/",
+        "model_dir": "../models/",
         "model": "alexnet",
-        "optimizer": "SGD",
+        "optimizer": "sgd",
         "loss_function": "CrossEntropy",
         "scheduler": "stepLR",
         "experiment_name": "000",
         "epochs": 20,
         "batch_size": 16,
-        "learning_rate": 0.001
+        "learning_rate": 0.001,
+        "pretrained": "false"
     },
     "meta": {
         "type": "",

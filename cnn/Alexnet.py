@@ -4,16 +4,6 @@
 Alexnet structure
 """
 
-
-import torch
-
-from torchvision.transforms import Resize, ToTensor, Normalize, Compose #Composes several transforms together
-from torch.utils.data import DataLoader
-import numpy as np
-
-#  Alexnet implementation---------------------------------------------------------------------------------------------
-
-
 import torch.nn as nn
 import torch.utils.model_zoo as model_zoo
 
@@ -79,90 +69,3 @@ class AlexNet(nn.Module):
         if pretrained:
             model.load_state_dict(model_zoo.load_url(model_urls['alexnet']))
         return model
-
-#  -------------------------------------------------------------------------------------------------------------------
-
-#
-# import torch.optim as optim
-#
-# model = AlexNet()
-# model = model.to(device)  # transfer the neural net onto the GPU
-# criterion = nn.CrossEntropyLoss()
-# optimizer = optim.Adam(model.parameters(), lr=0.001, betas=(0.9, 0.999), eps=1e-08, weight_decay=0, amsgrad=False)  # learning step and momentum accelerate gradients vectors in the right directions
-#
-#
-#
-# import numpy as np
-#
-#
-# def train(model, train_dataloader, val_dataloader, optimizer, n_epochs, loss_function):
-#     # monitor loss functions as the training progresses
-#     train_losses = []
-#     train_accuracies = []
-#     val_losses = []
-#     val_accuracies = []
-#
-#     for epoch in range(n_epochs):
-#         # Training phase
-#
-#         correct_train_predictions = 0  # We will measure accuracy
-#         # Iterate mini batches over training dataset
-#         losses = []
-#         # --------------------------------------------
-#         # Test phase
-#
-#         for images, labels in train_dataloader:
-#             images = images.to(device)  # we have to send the inputs and targets at every step to the GPU too
-#             labels = labels.to(device)
-#             output = model(images)  # run prediction; output <- vector with probabilities of each class
-#             # set gradients to zero
-#             optimizer.zero_grad()
-#             loss = loss_function(output, labels)
-#             #             print(loss.item())
-#             loss.backward()  # computes dloss/dx for every parameter x
-#             optimizer.step()  # performs a parameter update based on the current gradient
-#
-#             # Metrics
-#             losses.append(loss.item())  # gets the a scalar value held in the loss.
-#             predicted_labels = output.argmax(dim=1)
-#             #            print(predicted_labels)
-#             n_correct = (predicted_labels == labels).sum().item()  # compare the computation with ground truth
-#             correct_train_predictions += n_correct
-#         train_losses.append(np.mean(np.array(losses)))  # build a losses array on the way
-#         train_accuracies.append(100.0 * correct_train_predictions / len(
-#             train_dataloader.dataset))  # ratio of correct answer on ground truth
-#
-#         # --------------------------------------------
-#         # Evaluation phase
-#
-#         correct_val_predictions = 0  # We will measure accuracy
-#         # Iterate mini batches over validation set
-#         # We don't need gradients
-#         losses = []
-#         with torch.no_grad():
-#             for images, labels in val_dataloader:
-#                 images = images.to(device)
-#                 labels = labels.to(device)
-#                 output = model(images)
-#                 loss = loss_function(output, labels)
-#
-#                 losses.append(loss.item())
-#                 predicted_labels = output.argmax(dim=1)
-#                 n_correct = (predicted_labels == labels).sum().item()
-#                 correct_val_predictions += n_correct
-#         val_losses.append(np.mean(np.array(losses)))
-#         val_accuracies.append(100.0 * correct_val_predictions / len(val_dataloader.dataset))
-#
-#         print('Epoch {}/{}: train_loss: {:.4f}, train_accuracy: {:.4f}, val_loss: {:.4f}, val_accuracy: {:.4f}'.format(
-#             epoch + 1, n_epochs,
-#             train_losses[-1],
-#             train_accuracies[-1],
-#             val_losses[-1],
-#             val_accuracies[-1]))
-#     return train_losses, val_losses, train_accuracies, val_accuracies
-#
-#
-# n_epochs = 20
-# train_losses, val_losses, train_accuracies, val_accuracies = train(model, train_dataloader, val_dataloader, optimizer,
-#                                                                    n_epochs, criterion)
-#

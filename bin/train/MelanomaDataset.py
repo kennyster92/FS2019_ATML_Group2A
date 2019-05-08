@@ -1,6 +1,7 @@
 from torch.utils.data import Dataset
 from skimage import img_as_float
 
+
 class MelanomaDataset(Dataset):
 
     def __init__(self, image, label, transform=None):

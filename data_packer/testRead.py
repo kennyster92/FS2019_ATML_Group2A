@@ -5,8 +5,8 @@ import numpy as np
 from PIL import Image
 import matplotlib.pyplot as plt
 
-#img_array = np.load('BenignAndMalignant20000DatasetIMG.npy')
-#tags_array = np.load('BenignAndMalignant20000DatasetTAG.npy')
+img_array = np.load('../data/BenignAndMalignant20000DatasetIMG.npy')
+tags_array = np.load('../data/BenignAndMalignant20000DatasetTAG.npy')
 
 isMalignant = 0
 

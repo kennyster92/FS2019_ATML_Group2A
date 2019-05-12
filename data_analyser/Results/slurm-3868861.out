@@ -1,0 +1,36 @@
+Python 3.7.3
+Welcome! The program is running on cuda. It may take a while...
+I am using configuration file number 66
+Epoch 1/25: train_loss: 0.4463, train_accuracy: 76.8889, val_loss: 0.6532, val_accuracy: 62.8000
+Epoch 2/25: train_loss: 0.3661, train_accuracy: 81.9167, val_loss: 0.6348, val_accuracy: 63.3000
+Epoch 3/25: train_loss: 0.3375, train_accuracy: 83.6000, val_loss: 0.6169, val_accuracy: 64.9000
+Epoch 4/25: train_loss: 0.3213, train_accuracy: 84.1111, val_loss: 0.7387, val_accuracy: 57.4000
+Epoch 5/25: train_loss: 0.3162, train_accuracy: 84.7611, val_loss: 0.4581, val_accuracy: 77.4000
+Epoch 6/25: train_loss: 0.3144, train_accuracy: 85.0000, val_loss: 0.4695, val_accuracy: 74.6000
+Epoch 7/25: train_loss: 0.3093, train_accuracy: 85.6556, val_loss: 0.5595, val_accuracy: 68.4000
+Epoch 8/25: train_loss: 0.3066, train_accuracy: 85.4611, val_loss: 0.5494, val_accuracy: 67.2000
+Epoch 9/25: train_loss: 0.3130, train_accuracy: 85.0667, val_loss: 0.4616, val_accuracy: 76.2000
+Epoch 10/25: train_loss: 0.3114, train_accuracy: 85.0444, val_loss: 0.6052, val_accuracy: 62.7000
+Epoch 11/25: train_loss: 0.3076, train_accuracy: 85.7222, val_loss: 0.5488, val_accuracy: 66.7000
+Epoch 12/25: train_loss: 0.3018, train_accuracy: 85.8722, val_loss: 0.5016, val_accuracy: 73.8000
+Epoch 13/25: train_loss: 0.3119, train_accuracy: 85.1056, val_loss: 0.4735, val_accuracy: 74.8000
+Epoch 14/25: train_loss: 0.3032, train_accuracy: 85.5444, val_loss: 0.4910, val_accuracy: 76.3000
+Epoch 15/25: train_loss: 0.3111, train_accuracy: 85.3278, val_loss: 0.4761, val_accuracy: 76.9000
+Epoch 16/25: train_loss: 0.3075, train_accuracy: 85.7722, val_loss: 0.9849, val_accuracy: 50.2000
+Epoch 17/25: train_loss: 0.3195, train_accuracy: 84.8833, val_loss: 0.4693, val_accuracy: 79.0000
+Epoch 18/25: train_loss: 0.3044, train_accuracy: 85.6000, val_loss: 0.4892, val_accuracy: 75.8000
+Epoch 19/25: train_loss: 0.3088, train_accuracy: 85.5389, val_loss: 0.4879, val_accuracy: 74.8000
+Epoch 20/25: train_loss: 0.3054, train_accuracy: 85.8056, val_loss: 0.7304, val_accuracy: 63.4000
+Epoch 21/25: train_loss: 0.3042, train_accuracy: 85.6944, val_loss: 0.4749, val_accuracy: 75.9000
+Epoch 22/25: train_loss: 0.3057, train_accuracy: 85.8833, val_loss: 1.0705, val_accuracy: 60.7000
+Epoch 23/25: train_loss: 0.3074, train_accuracy: 85.4611, val_loss: 0.5131, val_accuracy: 78.1000
+Epoch 24/25: train_loss: 0.3013, train_accuracy: 85.8000, val_loss: 0.5249, val_accuracy: 72.4000
+Epoch 25/25: train_loss: 0.3020, train_accuracy: 85.9778, val_loss: 0.8953, val_accuracy: 54.7000
+Traceback (most recent call last):
+  File "ATML/main.py", line 114, in <module>
+    torch.save(model.state_dict(), model_dir + 'model' + experiment_name + '.pt')
+  File "/home/ubelix/artorg/kc12n043/miniconda3/envs/atml/lib/python3.7/site-packages/torch/serialization.py", line 224, in save
+    return _with_file_like(f, "wb", lambda f: _save(obj, f, pickle_module, pickle_protocol))
+  File "/home/ubelix/artorg/kc12n043/miniconda3/envs/atml/lib/python3.7/site-packages/torch/serialization.py", line 147, in _with_file_like
+    f = open(f, mode)
+FileNotFoundError: [Errno 2] No such file or directory: '../models/model66.pt'

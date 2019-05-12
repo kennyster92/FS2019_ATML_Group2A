@@ -1,7 +1,7 @@
 {
     "config": {
-        "result_dir": "../results/",
-        "model_dir": "../models/",
+        "result_dir": "./results/",
+        "model_dir": "./models/",
         "model": "alexnet",
         "optimizer": "sgd",
         "loss_function": "CrossEntropy",

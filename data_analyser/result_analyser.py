@@ -18,7 +18,6 @@ sheet1.write(0, 2, "Config file name")
 sheet1.write(0, 3, "Result file name")
 
 for name in files:
-    print("File: ", name)
     
     resultFile = open(name, "r")
     
@@ -28,9 +27,7 @@ for name in files:
     for line in resultFile:
         
         if line[:36] == "I am using configuration file number":
-            configFile = line[37:]
-            print("line =", line)
-            print("configFile =", configFile)
+            configFile = line[37:-1]
         
         if line[:6] == "Epoch ":
             if line[7:8].isdigit() == True:
@@ -47,8 +44,8 @@ for name in files:
             if float(curVal_accuracy) > float(maxVal_accuracy):
                 maxVal_accuracy = curVal_accuracy
                 maxAccuracyIndice = epochNb
-                
-    print("Max val accuracy =", maxVal_accuracy, "at epoch:", maxAccuracyIndice, "\n")
+     
+    print(name, "( configFile:", configFile, ") -> Max val accuracy =", maxVal_accuracy, "at epoch:", maxAccuracyIndice)           
     fileNumber = fileNumber + 1
     
     sheet1.write(fileNumber, 0, maxAccuracyIndice)

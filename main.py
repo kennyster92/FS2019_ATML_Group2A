@@ -33,7 +33,7 @@ if __name__ == '__main__':
         '--config_file',
         dest="config_file_path",
         type=str,
-        default='./config/config1.json',
+        default='./bin/config/config1.json',
         help='Path to the configuration file.'
     )
     parser.add_argument(

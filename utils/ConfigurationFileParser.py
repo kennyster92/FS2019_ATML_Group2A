@@ -24,6 +24,16 @@ class ConfigurationFileParser:
         self.experiment_name = values['config']['experiment_name']
 
         jsonFile.close()
+        
+        
+        #Add print parameters used
+        print("Parameters read from config files:")
+        print("Model:", self.model)
+        print("Optimizer:", self.optimizer)
+        print("Loss_function:", self.loss)
+        print("Number of epochs:", self.epochs)
+        print("Batch_size:", self.batchSize)
+        print("Learning rate:", self.lr, "\n")
 
     def getModel(self):
         if self.model == 'alexnet':

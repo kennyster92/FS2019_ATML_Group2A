@@ -35,6 +35,8 @@ for name in files:
         if line[:6] == "Epoch ":
             if line[7:8].isdigit() == True:
                 epochNb = line[6:8]
+                
+                valAccuracyStart = line.find("val_accuracy: ") + len("val_accuracy: ")
             else:
                 epochNb = line[6:7]
                 

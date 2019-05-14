@@ -2,15 +2,15 @@
     "config": {
         "result_dir": "./results/",
         "model_dir": "./models/",
-        "model": "alexnet",
+        "model": "resnet50",
         "optimizer": "sgd",
         "loss_function": "CrossEntropy",
-        "scheduler": "stepLR",
-        "experiment_name": "000",
-        "epochs": 20,
+        "scheduler": "none",
+        "experiment_name": "100",
+        "epochs": 25,
         "batch_size": 16,
         "learning_rate": 0.001,
-        "pretrained": "false"
+        "pretrained": "true"
     },
     "meta": {
         "type": "",

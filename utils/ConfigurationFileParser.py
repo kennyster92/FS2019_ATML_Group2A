@@ -22,6 +22,7 @@ class ConfigurationFileParser:
         self.lr = float(values['config']['learning_rate'])
         self.model_dir = values['config']['model_dir']
         self.experiment_name = values['config']['experiment_name']
+        self.pretrained = values['config']['pretrained']
 
         jsonFile.close()
         
@@ -35,11 +36,11 @@ class ConfigurationFileParser:
         print("Batch_size:", self.batchSize)
         print("Learning rate:", self.lr, "\n")
 
-    def getModel(self):
+    def getModel(self, pretrained):
         if self.model == 'alexnet':
-            return alexnet.AlexNet()
+            return alexnet.AlexNet(pretrained)
         elif self.model == 'resnet50':
-            return resnet.resnet50()
+            return resnet.resnet50(pretrained)
         else:
             return None
 
@@ -57,9 +58,9 @@ class ConfigurationFileParser:
         else:
             return None
 
-    def getScheduler(self):
+    def getScheduler(self, optimizer):
         if self.scheduler == 'stepLR':
-            return 'stepLR'
+            return optim.lr_scheduler.StepLR(optimizer=optimizer, step_size=10, gamma=0.1)
         elif self.scheduler == 'none':
             return None
         else:
@@ -79,4 +80,12 @@ class ConfigurationFileParser:
 
     def getExperimentName(self):
         return str(self.experiment_name)
+
+    def getPretrained(self):
+        if self.pretrained == 'true':
+            return True
+        elif self.pretrained == 'false':
+            return False
+        else:
+            return None
 

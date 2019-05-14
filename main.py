@@ -33,7 +33,7 @@ if __name__ == '__main__':
         '--config_file',
         dest="config_file_path",
         type=str,
-        default='./bin/config/config1.json',
+        default='./bin/config/config.json',
         help='Path to the configuration file.'
     )
     parser.add_argument(
@@ -56,12 +56,13 @@ if __name__ == '__main__':
     # Reading of the configuration parameters
     configuration = conf.ConfigurationFileParser(config)
 
-    model = configuration.getModel()
+    pretrained = configuration.getPretrained()
+    model = configuration.getModel(pretrained)
     model = model.to(device)
     lr = configuration.getLearningRate()
     optimizer = configuration.getOptimizer(model, lr)
     loss = configuration.getLoss()
-    scheduler = configuration.getScheduler()
+    scheduler = configuration.getScheduler(optimizer)
     epochs = configuration.getEpochs()
     batch_size = configuration.getBatchSize()
     model_dir = configuration.getModelDir()
@@ -111,13 +112,8 @@ if __name__ == '__main__':
 
 
     # Save model to file
-    torch.save(model.state_dict(), './models/model_{}.pth'.format(experiment_name))
+    torch.save(model.state_dict(), '{}model_{}.pth'.format(model_dir, experiment_name))
 
-
-    # load model from a file
-    #model = alexnet.AlexNet(*args, **kwargs)
-    #model.load_state_dict(torch.load(model_dir))
-    #model.eval()
 
     # Test of the model
     # tester = test.Tester()

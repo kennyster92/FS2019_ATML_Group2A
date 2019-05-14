@@ -2,7 +2,7 @@
     "config": {
         "result_dir": "../results/",
         "model_dir": "../models/",
-        "model": "alexnet",
+        "model": "resnet50",
         "optimizer": "sgd",
         "loss_function": "CrossEntropy",
         "scheduler": "none",

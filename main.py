@@ -40,7 +40,7 @@ if __name__ == '__main__':
         '--data_path',
         dest="data_path",
         type=str,
-        default='../data/',
+        default='./data/',
         help='Path to the data.'
     )
     parser.add_argument("-q", "--quiet",

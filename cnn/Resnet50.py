@@ -179,6 +179,7 @@ def resnet50(pretrained=True, **kwargs): #  Constructs a ResNet-50 model
         3 layers -> output size 7x7
     """
     model = ResNet(Bottleneck, [3, 4, 6, 3], **kwargs)  #  description of the basic structure of resnet
+
     if pretrained:
         pretrained_state = model_zoo.load_url(model_urls['resnet50'])
         model_state = model.state_dict()

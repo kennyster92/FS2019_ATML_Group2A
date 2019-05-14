@@ -111,7 +111,7 @@ if __name__ == '__main__':
 
 
     # Save model to file
-    torch.save(model.state_dict(), model_dir + 'model' + experiment_name + '.pt')
+    torch.save(model.state_dict(), './models/model_{}.pth'.format(experiment_name))
 
 
     # load model from a file

@@ -2,7 +2,7 @@
 
 import os
 import numpy as np
-import PIL
+from PIL import Image
 
 fileNameIMGS = "BenignAndMalignant20000DatasetIMG.npy"
 fileNameTAGS = "BenignAndMalignant20000DatasetTAG.npy"
@@ -18,7 +18,7 @@ i = 1
 for file in listOfFiles:
     print("Packing image " + str(i) + "/" + str(len(listOfFiles)) + " -> " + file)
     
-    image = PIL.Image.open(imagesPath + "/" + file)
+    image = Image.open(imagesPath + "/" + file)
     
     imageArray.append(np.array(image))
     tagArray.append(file[0:1])

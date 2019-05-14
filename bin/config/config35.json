@@ -1,0 +1,19 @@
+{
+    "config": {
+        "result_dir": "../results/",
+        "model_dir": "../models/",
+        "model": "alexnet",
+        "optimizer": "adam",
+        "loss_function": "CrossEntropy",
+        "scheduler": "none",
+        "experiment_name": 35,
+        "epochs": 30,
+        "batch_size": 64,
+        "learning_rate": 0.001,
+        "pretrained": "false"
+    },
+    "meta": {
+        "type": "",
+        "version": 1
+    }
+}

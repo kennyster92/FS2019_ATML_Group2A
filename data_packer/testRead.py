@@ -3,12 +3,24 @@
 
 import numpy as np
 from PIL import Image
+import matplotlib.pyplot as plt
 
-img_array = np.load('BenignAndMalignant20000DatasetIMG.npy')
-tags_array = np.load('BenignAndMalignant20000DatasetTAG.npy')
+img_array = np.load('../data/BenignAndMalignant20000DatasetIMG.npy')
+tags_array = np.load('../data/BenignAndMalignant20000DatasetTAG.npy')
 
+isMalignant = 0
 
-im = Image.fromarray(img_array[18000])
-print("TAG = ", tags_array[18000])
+fig = plt.figure()
 
-im.show()
+for i in range(15):
+    im = Image.fromarray(img_array[i+(9999*isMalignant)])
+    print("TAG(", i+(9999*isMalignant), ") = ", tags_array[i+(9999*isMalignant)])
+    
+    plt.subplot(3, 5, i+1)
+    plt.imshow(im)
+    
+    plt.xticks([])
+    plt.yticks([])
+
+plt.show()
+    

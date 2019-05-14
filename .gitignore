@@ -2,3 +2,4 @@ data_downloader/downloadedFiles/
 data_enhancer/downloadedFiles/
 data_packer/downloadedFiles/
 data_packer/BenignAndMalignant20000Dataset/
+.idea/

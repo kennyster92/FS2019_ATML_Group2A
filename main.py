@@ -116,5 +116,5 @@ if __name__ == '__main__':
 
 
     # Test of the model
-    # tester = test.Tester()
-    # test_losses, test_accuracies = tester.predict(test_dataloader, model, optimizer, loss)
+    tester = test.Tester()
+    test_losses, test_accuracies = tester.predict(test_dataloader, model)

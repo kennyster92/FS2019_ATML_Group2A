@@ -118,3 +118,6 @@ if __name__ == '__main__':
     # Test of the model
     tester = test.Tester()
     test_losses, test_accuracies = tester.predict(test_dataloader, model)
+    
+    plt_stat.plot_test_loss(epochs, test_losses)
+    plt_stat.plot_test_accuracy(epochs, test_accuracies)

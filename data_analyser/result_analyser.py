@@ -12,10 +12,16 @@ book = xlwt.Workbook(encoding="utf-8")
 
 sheet1 = book.add_sheet("Sheet 1")
 
-sheet1.write(0, 0, "Epoch")
+sheet1.write(0, 0, "At epoch")
 sheet1.write(0, 1, "Max val_accuracy")
 sheet1.write(0, 2, "Config file name")
 sheet1.write(0, 3, "Result file name")
+
+sheet1.write(0, 5, "Model")
+sheet1.write(0, 6, "Optimizer")
+sheet1.write(0, 7, "Number of epochs")
+sheet1.write(0, 8, "Batch size")
+sheet1.write(0, 9, "LR")
 
 for name in files:
     
@@ -52,6 +58,12 @@ for name in files:
     sheet1.write(fileNumber, 1, maxVal_accuracy)
     sheet1.write(fileNumber, 2, configFile)
     sheet1.write(fileNumber, 3, name)
+    
+    sheet1.write(fileNumber, 5, used_model)
+    sheet1.write(fileNumber, 6, used_optimizer)
+    sheet1.write(fileNumber, 7, used_epochs)
+    sheet1.write(fileNumber, 8, used_batchSize)
+    sheet1.write(fileNumber, 9, used_LR)
     
     
 book.save("Results.xls")

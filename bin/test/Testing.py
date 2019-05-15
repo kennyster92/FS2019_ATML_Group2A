@@ -25,6 +25,8 @@ class Tester:
                 n_correct += torch.sum(output.argmax(1) == labels).item()
 
         accuracy = 100.0 * n_correct / len(test_dataloader.dataset)
+        
+        print('Test_accuracy: {:.4f}' .format(accuracy))
 
         return accuracy
 

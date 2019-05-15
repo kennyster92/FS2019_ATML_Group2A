@@ -7,6 +7,7 @@ class Tester:
         """
         Initializes a new instance of the Tester class.
         """
+        self.device = torch.device('cuda') if torch.cuda.is_available() else torch.device('cpu')
 
     def predict(self, test_dataloader, model):
         '''

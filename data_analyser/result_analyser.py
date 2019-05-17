@@ -26,12 +26,12 @@ sheet1.write(0, 11, "Batch size")
 sheet1.write(0, 12, "LR")
 
 parametersList = ["Model: ", "Optimizer: ", "Loss_function: ", "Number of epochs: ", "Batch_size: ", "Learning rate: "]
-parametersUsedList = []
 
 for name in files:
     
     resultFile = open(name, "r")
     
+    parametersUsedList = []
     maxVal_accuracy = 0
     maxAccuracyIndice = 0
     test_accuracy = 0
@@ -80,5 +80,7 @@ for name in files:
     sheet1.write(fileNumber, 10, parametersUsedList[3])
     sheet1.write(fileNumber, 11, parametersUsedList[4])
     sheet1.write(fileNumber, 12, parametersUsedList[5])
+    
+
 
 book.save("Results.xls")

@@ -1,5 +1,6 @@
 from itertools import dropwhile
 
+import os
 import torch
 import numpy as np
 from torchvision.transforms import ToTensor, Compose, Normalize, Lambda
@@ -98,18 +99,34 @@ if __name__ == '__main__':
     # Train of the model
     trainer = train.Trainer()
 
+    # model = alexnet.AlexNet()
+    # optimizer = optim.Adam(model.parameters(), lr=0.001, betas=(0.9, 0.999), eps=1e-08, weight_decay=0, amsgrad=False)
+
+    # model = resnet.resnet50()
+    # model = model.to(device)  # transfer the neural net onto the GPU
+    # optimizer = optim.SGD(model.parameters(), lr=0.001, momentum=0.9)  # for ResNet
+
     train_losses, train_accuracies, val_losses, val_accuracies = trainer.fit(train_dataloader, val_dataloader, model, optimizer, loss, epochs)
 
-    plt_stat.plot_loss(epochs, train_losses, val_losses)
-    plt_stat.plot_accuracy(epochs, train_accuracies, val_accuracies)
+    plt_stat.plot_loss(epochs, train_losses, val_losses, experiment_name)
+    plt_stat.plot_accuracy(epochs, train_accuracies, val_accuracies, experiment_name)
 
 
-    # Save model to file
-    torch.save(model.state_dict(), '{}model_{}.pth'.format(model_dir, experiment_name))
+    # Save model to file 
+    if not os.path.exists("modelTest"):
+        os.mkdir("modelTest")
+    
+    try:
+        torch.save(model.state_dict(), '{}model_{}.pth'.format("modelTest/", experiment_name))    
+    except:  
+        print("Problem during saving model")
+    else:
+        print("Model saved")
 
 
     # Test of the model
     tester = test.Tester()
     test_accuracies = tester.predict(test_dataloader, model)
     
-    plt_stat.plot_test_accuracy(epochs, test_accuracies)
+    #plt_stat.plot_test_loss(epochs, test_losses)
+    #plt_stat.plot_test_accuracy(epochs, test_accuracies, experiment_name)

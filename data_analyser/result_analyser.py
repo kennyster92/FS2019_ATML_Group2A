@@ -1,5 +1,6 @@
 import glob
 import xlwt
+import os
 
 path = 'Results/*.out'
 fileNumber = 0
@@ -35,6 +36,7 @@ for name in files:
     maxVal_accuracy = 0
     maxAccuracyIndice = 0
     test_accuracy = 0
+    configFile = 0
     
     for line in resultFile:
 
@@ -64,23 +66,33 @@ for name in files:
                 maxVal_accuracy = curVal_accuracy
                 maxAccuracyIndice = epochNb
      
-    print(name, "( configFile:", configFile, ") -> Max val accuracy =", maxVal_accuracy, "at epoch:", maxAccuracyIndice)           
-    fileNumber = fileNumber + 1
+               
+    fileNumber = fileNumber + 1    
+        
+    if len(parametersUsedList) == len(parametersList):
+        print(name, "( configFile:", configFile, ") -> Max val accuracy =", maxVal_accuracy, "at epoch:", maxAccuracyIndice)
+        
+        sheet1.write(fileNumber, 0, maxAccuracyIndice)
+        sheet1.write(fileNumber, 1, maxVal_accuracy)
+        sheet1.write(fileNumber, 2, test_accuracy)
     
-    sheet1.write(fileNumber, 0, maxAccuracyIndice)
-    sheet1.write(fileNumber, 1, maxVal_accuracy)
-    sheet1.write(fileNumber, 2, test_accuracy)
-
-    sheet1.write(fileNumber, 4, configFile)
-    sheet1.write(fileNumber, 5, name)
-
-    sheet1.write(fileNumber, 7, parametersUsedList[0])
-    sheet1.write(fileNumber, 8, parametersUsedList[1])
-    sheet1.write(fileNumber, 9, parametersUsedList[2])
-    sheet1.write(fileNumber, 10, parametersUsedList[3])
-    sheet1.write(fileNumber, 11, parametersUsedList[4])
-    sheet1.write(fileNumber, 12, parametersUsedList[5])
+        sheet1.write(fileNumber, 4, configFile)
+        sheet1.write(fileNumber, 5, name)
     
+        sheet1.write(fileNumber, 7, parametersUsedList[0])
+        sheet1.write(fileNumber, 8, parametersUsedList[1])
+        sheet1.write(fileNumber, 9, parametersUsedList[2])
+        sheet1.write(fileNumber, 10, parametersUsedList[3])
+        sheet1.write(fileNumber, 11, parametersUsedList[4])
+        sheet1.write(fileNumber, 12, parametersUsedList[5])
+    
+    else:
+        sheet1.write(fileNumber, 0, "Error in out file " + str(name))
+        print("Error in out file " + str(name))
 
+    resultFile.close
 
+if os.path.exists("Results.xls"):
+    os.remove("Results.xls")
+    
 book.save("Results.xls")

@@ -3,7 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="30bf91cd-1cfa-44bb-828d-e01373744f11" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ATML_Project_Group2_1.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/ATML_Project_Group2_1.ipynb" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -263,10 +262,10 @@
       <method v="2" />
     </configuration>
     <list>
-      <item itemvalue="Python.jsonGenerator" />
-      <item itemvalue="Python.main (1)" />
       <item itemvalue="Python.main" />
+      <item itemvalue="Python.main (1)" />
       <item itemvalue="Python.result_analyser" />
+      <item itemvalue="Python.jsonGenerator" />
     </list>
     <recent_temporary>
       <list>
@@ -351,7 +350,14 @@
       <option name="project" value="LOCAL" />
       <updated>1558363873982</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="Report plot">
+      <created>1558389354329</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1558389354329</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="TodoView">
@@ -365,6 +371,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="25" width="1920" height="990" extended-state="6" />
+    <editor active="true" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.24386339" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
@@ -395,7 +402,8 @@
     <MESSAGE value="Added file for Jupyter" />
     <MESSAGE value="Cleaning of the code" />
     <MESSAGE value="Report" />
-    <option name="LAST_COMMIT_MESSAGE" value="Report" />
+    <MESSAGE value="Report plot" />
+    <option name="LAST_COMMIT_MESSAGE" value="Report plot" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

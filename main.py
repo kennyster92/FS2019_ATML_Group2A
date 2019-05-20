@@ -99,13 +99,6 @@ if __name__ == '__main__':
     # Train of the model
     trainer = train.Trainer()
 
-    # model = alexnet.AlexNet()
-    # optimizer = optim.Adam(model.parameters(), lr=0.001, betas=(0.9, 0.999), eps=1e-08, weight_decay=0, amsgrad=False)
-
-    # model = resnet.resnet50()
-    # model = model.to(device)  # transfer the neural net onto the GPU
-    # optimizer = optim.SGD(model.parameters(), lr=0.001, momentum=0.9)  # for ResNet
-
     train_losses, train_accuracies, val_losses, val_accuracies = trainer.fit(train_dataloader, val_dataloader, model, optimizer, loss, epochs)
 
     plt_stat.plot_loss(epochs, train_losses, val_losses, experiment_name)
@@ -128,5 +121,4 @@ if __name__ == '__main__':
     tester = test.Tester()
     test_accuracies = tester.predict(test_dataloader, model)
     
-    #plt_stat.plot_test_loss(epochs, test_losses)
-    #plt_stat.plot_test_accuracy(epochs, test_accuracies, experiment_name)
+    plt_stat.plot_test_accuracy(epochs, test_accuracies, experiment_name)

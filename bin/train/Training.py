@@ -58,6 +58,7 @@ class Trainer:
             losses.append(loss.item())
             n_correct += torch.sum(output.argmax(1) == labels).item()
         accuracy = 100.0 * n_correct / len(train_loader.dataset)
+
         # Save model to file
         if not os.path.exists("modelTest"):
             os.mkdir("modelTest")
@@ -68,6 +69,7 @@ class Trainer:
             print("Problem during saving model")
         else:
             print("Model saved")
+
         return np.mean(np.array(losses)), accuracy
 
     def validate(self, model, validation_loader, loss_fn):

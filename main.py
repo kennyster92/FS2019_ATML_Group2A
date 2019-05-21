@@ -12,13 +12,6 @@ from bin.test import Testing as test
 from bin.train import Training as train
 from bin.train import MelanomaDataset as data
 
-import torch.nn as nn
-import torch.optim as optim
-from cnn import Alexnet as alexnet
-from cnn import Resnet50 as resnet
-import cnn.LinearModel as lm
-
-
 if __name__ == '__main__':
     """The program's entry point.
     Parse the arguments and run the program.
@@ -104,19 +97,6 @@ if __name__ == '__main__':
 
     plt_stat.plot_loss(epochs, train_losses, val_losses, experiment_name)
     plt_stat.plot_accuracy(epochs, train_accuracies, val_accuracies, experiment_name)
-
-
-    # Save model to file 
-    if not os.path.exists("modelTest"):
-        os.mkdir("modelTest")
-    
-    try:
-        torch.save(model.state_dict(), '{}model_{}.pth'.format("modelTest/", experiment_name))    
-    except:  
-        print("Problem during saving model")
-    else:
-        print("Model saved")
-
 
     # Test of the model
     tester = test.Tester()

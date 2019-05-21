@@ -25,6 +25,7 @@ if __name__ == '__main__':
     """
 
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+    print(device)
 
     print("Welcome! The program is running on " + device.__str__() + ". It may take a while...")
 
@@ -34,7 +35,7 @@ if __name__ == '__main__':
         '--config_file',
         dest="config_file_path",
         type=str,
-        default='./bin/config/config.json',
+        default='./bin/config/config1003.json',
         help='Path to the configuration file.'
     )
     parser.add_argument(

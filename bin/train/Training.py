@@ -1,5 +1,6 @@
 import torch
 import numpy as np
+import os
 
 
 class Trainer:
@@ -16,7 +17,7 @@ class Trainer:
         val_losses, val_accuracies = [], []
 
         for epoch in range(n_epochs):
-            train_loss, train_accuracy = self.train(model, train_dataloader, optimizer, loss_fn)
+            train_loss, train_accuracy = self.train(model, train_dataloader, optimizer, loss_fn, epoch)
             val_loss, val_accuracy = self.validate(model, val_dataloader, loss_fn)
             train_losses.append(train_loss)
             train_accuracies.append(train_accuracy)
@@ -34,7 +35,7 @@ class Trainer:
 
         return train_losses, train_accuracies, val_losses, val_accuracies
 
-    def train(self, model, train_loader, optimizer, loss_fn):
+    def train(self, model, train_loader, optimizer, loss_fn, epoch):
         '''
         Trains the model for one epoch
         '''
@@ -57,6 +58,16 @@ class Trainer:
             losses.append(loss.item())
             n_correct += torch.sum(output.argmax(1) == labels).item()
         accuracy = 100.0 * n_correct / len(train_loader.dataset)
+        # Save model to file
+        if not os.path.exists("modelTest"):
+            os.mkdir("modelTest")
+
+        try:
+            torch.save(model.state_dict(), '{}model_{}_{}.pth'.format("modelTest/", '001', epoch))
+        except:
+            print("Problem during saving model")
+        else:
+            print("Model saved")
         return np.mean(np.array(losses)), accuracy
 
     def validate(self, model, validation_loader, loss_fn):
@@ -80,6 +91,8 @@ class Trainer:
 
         average_loss = test_loss / len(validation_loader)
         accuracy = 100.0 * n_correct / len(validation_loader.dataset)
-
+        torch.save(model.state_dict(), '{}model_{}_afterValSave.pth'.format("modelTest/", '001'))
         return average_loss, accuracy
+
+
 
